@@ -40,6 +40,7 @@ public class DBConnectionExtension extends es.udc.cartolab.gvsig.users.DBConnect
 		decorators.add(PluginServices.getDecoratedExtension(es.udc.cartolab.gvsig.elle.LoadMapExtension.class));
 		decorators.add(PluginServices.getDecoratedExtension(es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension.class));
 		decorators.add(PluginServices.getDecoratedExtension(es.udc.cartolab.gvsig.elle.SaveAllLegendsExtension.class));
+		decorators.add(PluginServices.getDecoratedExtension(es.udc.cartolab.gvsig.elle.SaveMapExtension.class));
 
 		for(ExtensionDecorator decorator : decorators) {
 			decorator.setVisibility(ExtensionDecorator.ALWAYS_INVISIBLE);

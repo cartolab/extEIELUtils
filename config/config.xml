@@ -90,5 +90,10 @@
 				action-command="DROP"
 				position="1020"/> 
 		</extension>
+				<extension class-name="es.udc.cartolab.gvsig.eielutils.SaveMapExtension" description="save_map" active="true">
+			<menu text="EIEL/save_map"
+				action-command="SaveMap"
+				position="04" />
+		</extension>
 	</extensions>
 </plugin-config>
