@@ -16,7 +16,7 @@ import com.iver.cit.gvsig.fmap.layers.layerOperations.AlphanumericData;
 public class LayerOperations {
 
 	public static void zoomToNucleo (FLayer layer, String codMun, String codEnt, String codNuc) {
-		Rectangle2D rectangle = null;
+
 
 		if (layer instanceof AlphanumericData) {
 			int pos = -1;
@@ -26,9 +26,9 @@ public class LayerOperations {
 				recordset = ((FLyrVect) layer).getRecordset();
 
 
-				int munIdx = recordset.getFieldIndexByName("mun");
-				int entIdx = recordset.getFieldIndexByName("ent");
-				int nucIdx = recordset.getFieldIndexByName("poblamiento");
+				int munIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
+				int entIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_ENT);
+				int nucIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_POB);
 
 				if (munIdx > -1 && entIdx > -1 && nucIdx > -1) {
 					for (int i=0; i<recordset.getRowCount(); i++) {
@@ -45,6 +45,7 @@ public class LayerOperations {
 								cod = cod.replaceAll("'", "");
 								if (cod.equals(codNuc)) {
 									pos = i;
+									break;
 								}
 							}
 						}
@@ -57,39 +58,85 @@ public class LayerOperations {
 
 
 			if (pos > -1) {
+				zoom((FLyrVect) layer, pos);
+			}
+		}
+	}
 
-				//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
-				try {
-					IGeometry g;
-					ReadableVectorial source = ((FLyrVect)layer).getSource();
-					source.start();
-					g = source.getShape(pos);
-					source.stop();
+	public static void zoomToMunicipio (FLayer layer, String codMun) {
 
-					/* fix to avoid zoom problems when layer and view
-					 * projections aren't the same. */
-					g.reProject(layer.getProjection().getCT(layer.getMapContext().getProjection()));
 
-					rectangle = g.getBounds2D();
+		if (layer instanceof AlphanumericData) {
+			int pos = -1;
 
-					if (rectangle.getWidth() < 200){
-						rectangle.setFrameFromCenter(rectangle.getCenterX(),
-								rectangle.getCenterY(),
-								rectangle.getCenterX()+100,
-								rectangle.getCenterY()+100);
+			SelectableDataSource recordset;
+			try {
+				recordset = ((FLyrVect) layer).getRecordset();
+
+
+				int munIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
+
+				if (munIdx > -1) {
+					for (int i=0; i<recordset.getRowCount(); i++) {
+						Value val = recordset.getFieldValue(i, munIdx);
+						String cod = val.getStringValue(ValueWriter.internalValueWriter);
+						cod = cod.replaceAll("'", "");
+						if (cod.equals(codMun)) {
+							pos = i;
+							break;
+						}
 					}
-
-					if (rectangle != null) {
-						layer.getMapContext().getViewPort().setExtent(rectangle);
-					}
-
-				} catch (InitializeDriverException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ReadDriverException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} catch (ReadDriverException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+
+			if (pos > -1) {
+				zoom((FLyrVect) layer, pos);
+			}
+		}
+	}
+
+	private static void zoom(FLyrVect layer, int pos) {
+
+		Rectangle2D rectangle = null;
+		//		int pos = Long.valueOf(currentPosition).intValue();
+		if (layer instanceof AlphanumericData) {
+			//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
+			try {
+				IGeometry g;
+				ReadableVectorial source = (layer).getSource();
+				source.start();
+				g = source.getShape(pos);
+				source.stop();
+
+				/* fix to avoid zoom problems when layer and view
+				 * projections aren't the same. */
+				if (layer.getCoordTrans() != null) {
+					g.reProject(layer.getCoordTrans());
+				}
+
+				rectangle = g.getBounds2D();
+
+				if (rectangle.getWidth() < 200){
+					rectangle.setFrameFromCenter(rectangle.getCenterX(),
+							rectangle.getCenterY(),
+							rectangle.getCenterX()+100,
+							rectangle.getCenterY()+100);
+				}
+
+				if (rectangle != null) {
+					layer.getMapContext().getViewPort().setExtent(rectangle);
+				}
+
+			} catch (InitializeDriverException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ReadDriverException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
