@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JCheckBox;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.elle.gui.ElleWizard;
 
 public class EielWizard extends ElleWizard {
@@ -35,16 +36,17 @@ public class EielWizard extends ElleWizard {
 	protected String getWhereClause() {
 		//		return "";
 		String whereClause = "";
+		String munField = EIELValues.FIELD_COD_MUN;
 		if (ctesCHB.isSelected()) {
 			Constants constants = Constants.getCurrentConstants();
 			if (constants!=null) {
 				whereClause = "WHERE ";
 				List<String> councils = constants.getMunicipios();
 				for (int j=0; j<councils.size()-1; j++) {
-					whereClause = whereClause.concat("municipio ='" + councils.get(j) +
+					whereClause = whereClause.concat(munField + "='" + councils.get(j) +
 					"' OR ");
 				}
-				whereClause = whereClause.concat("municipio ='" + councils.get(councils.size()-1) + "'");
+				whereClause = whereClause.concat(munField + "='" + councils.get(councils.size()-1) + "'");
 
 			}
 		}

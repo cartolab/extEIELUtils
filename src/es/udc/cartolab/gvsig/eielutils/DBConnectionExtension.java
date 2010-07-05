@@ -17,7 +17,7 @@ public class DBConnectionExtension extends es.udc.cartolab.gvsig.users.DBConnect
 	public void execute(String actionCommand) {
 
 		//with header image (Pontevedra)
-		DBConnectionDialog dialog = new DBConnectionDialog(EIELValues.getHeader(), EIELValues.color);
+		DBConnectionDialog dialog = new DBConnectionDialog(EIELValues.getHeader(), EIELValues.HEADER_COLOR);
 		dialog.openWindow();
 	}
 

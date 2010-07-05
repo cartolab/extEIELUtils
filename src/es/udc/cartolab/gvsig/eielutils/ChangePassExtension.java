@@ -8,7 +8,7 @@ public class ChangePassExtension extends es.udc.cartolab.gvsig.users.ChangePassE
 	@Override
 	public void execute(String actionCommand) {
 
-		ChangePassDialog dialog = new ChangePassDialog(EIELValues.getHeader(), EIELValues.color);
+		ChangePassDialog dialog = new ChangePassDialog(EIELValues.getHeader(), EIELValues.HEADER_COLOR);
 		dialog.openWindow();
 	}
 

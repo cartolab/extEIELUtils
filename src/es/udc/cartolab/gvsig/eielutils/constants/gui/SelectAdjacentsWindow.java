@@ -27,6 +27,7 @@ import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionListener {
@@ -164,13 +165,15 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		if (centerPanel == null) {
 			centerPanel = new JPanel();
 			DBSession dbs = DBSession.getCurrentSession();
+			String munField = EIELValues.FIELD_COD_MUN;
+			String denomField = EIELValues.FIELD_DENOM;
 			if (dbs != null) {
 				GridLayout layout = new GridLayout(13,5);
 				centerPanel.setLayout(layout);
 				ArrayList<String> adjacents = new ArrayList<String>();
-				String query = "SELECT municipio FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE municipio='" +
-				municipio + "')) ORDER BY denominaci";
-				String table = dbs.getSchema() + ".municipio";
+				String query = "SELECT " + munField + " FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE " + munField + "='" +
+				municipio + "')) ORDER BY " + denomField;
+				String table = dbs.getSchema() + "." + EIELValues.TABLE_MUNICIPIO;
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
 
@@ -179,7 +182,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					ResultSet rs = stat.executeQuery(query);
 
 					while (rs.next()) {
-						String text = rs.getString("municipio");
+						String text = rs.getString(munField);
 						adjacents.add(text);
 					}
 					rs.close();
@@ -187,7 +190,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				query = "SELECT municipio, denominaci FROM %s ORDER BY municipio";
+				query = "SELECT " + munField + ", " + denomField + " FROM %s ORDER BY " + munField;
 				query = String.format(query, table);
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
@@ -197,8 +200,8 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					ResultSet rs = stat.executeQuery(query);
 
 					while (rs.next()) {
-						String mun = rs.getString("municipio");
-						String name = rs.getString("denominaci");
+						String mun = rs.getString(munField);
+						String name = rs.getString(denomField);
 						JCheckBox chb = new JCheckBox(name);
 						chb.setToolTipText(name);
 						if (adjacents.contains(mun)) {

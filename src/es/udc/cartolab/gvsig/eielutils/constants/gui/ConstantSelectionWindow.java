@@ -1,14 +1,12 @@
 package es.udc.cartolab.gvsig.eielutils.constants.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +25,7 @@ import com.iver.andami.ui.mdiManager.WindowInfo;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConstantSelectionWindow extends JPanel implements IWindow, ActionListener {
@@ -40,15 +39,14 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	private JButton okButton;
 	private JButton cancelButton;
 
-	//Constantes (deberia moverse a otro archivo general?
-	private final String municipioTable = "municipio";
-	private final String munCodField = "municipio";
-	private final String entidadTable = "entidad_singular";
-	private final String entCodField = "entidad";
-	private final String nucleoTable = "nucleo_poblacion";
-	private final String nucCodField ="poblamiento";
-	private final String denominacion = "denominaci";
-	private final String fase = "2005";
+	private final String municipioTable = EIELValues.TABLE_MUNICIPIO;
+	private final String munCodField = EIELValues.FIELD_COD_MUN;
+	private final String entidadTable = EIELValues.TABLE_ENTIDAD;
+	private final String entCodField = EIELValues.FIELD_COD_ENT;
+	private final String nucleoTable = EIELValues.TABLE_NUCLEO;
+	private final String nucCodField = EIELValues.FIELD_COD_POB;
+	private final String denominacion = EIELValues.FIELD_DENOM;
+	private final String fase = EIELValues.FASE;
 
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
@@ -106,14 +104,15 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 		//Current header (Pontevedra) size: 425x79
 		if (northPanel == null) {
 			northPanel = new JPanel();
-			File iconPath = new File("gvSIG/extensiones/es.udc.cartolab.gvsig.elle/images/header.png");
-			if (iconPath.exists()) {
-				northPanel.setBackground(new Color(36, 46, 109));
-				ImageIcon logo = new ImageIcon(iconPath.getAbsolutePath());
-				JLabel icon = new JLabel();
-				icon.setIcon(logo);
-				northPanel.add(icon, BorderLayout.WEST);
-			}
+			//			File iconPath = new File("gvSIG/extensiones/es.udc.cartolab.gvsig.elle/images/header.png");
+			ImageIcon logo = EIELValues.getHeader();
+			//			if (iconPath.exists()) {
+			northPanel.setBackground(EIELValues.HEADER_COLOR);
+			//				ImageIcon logo = new ImageIcon(iconPath.getAbsolutePath());
+			JLabel icon = new JLabel();
+			icon.setIcon(logo);
+			northPanel.add(icon, BorderLayout.WEST);
+			//			}
 		}
 		return northPanel;
 	}

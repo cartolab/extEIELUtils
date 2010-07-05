@@ -9,7 +9,7 @@ public class CreateUserExtension extends es.udc.cartolab.gvsig.users.CreateUserE
 	@Override
 	public void execute(String actionCommand) {
 
-		CreateUserWindow window = new EIELCreateUserWindow(EIELValues.getHeader(), EIELValues.color);
+		CreateUserWindow window = new EIELCreateUserWindow(EIELValues.getHeader(), EIELValues.HEADER_COLOR);
 		window.openWindow();
 	}
 
