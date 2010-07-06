@@ -6,23 +6,32 @@ import java.util.List;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiFrame.NewStatusBar;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
+
+import es.udc.cartolab.gvsig.eielutils.misc.MapView;
 
 public class Constants {
 
+	private ArrayList<MapView> loadedMaps;
+
 	private static Constants instance = null;
 
-	List<String> municipios;
-	String munCod;
-	String entCod;
-	String nucCod;
+	private List<String> municipios;
+	private String munCod;
+	private String entCod;
+	private String nucCod;
+	private boolean constatsSelected = false;
 
 	private Constants() {
-
+		loadedMaps = new ArrayList<MapView>();
 	}
 	/**
 	 * @return user defined constants, or null if they're not defined yet.
 	 */
 	public static Constants getCurrentConstants() {
+		if (instance == null) {
+			instance = new Constants();
+		}
 		return instance;
 	}
 
@@ -45,6 +54,7 @@ public class Constants {
 			instance.municipios.add(munCod);
 		}
 		instance.changeStatusBar();
+		instance.constatsSelected = true;
 		return instance;
 	}
 
@@ -87,12 +97,54 @@ public class Constants {
 	}
 
 	public static void removeConstants() {
-		if (instance!=null) {
-			instance = null;
+		if (instance.constatsSelected) {
+			instance.constatsSelected = false;
 			MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
 			NewStatusBar footerStatusBar = mF.getStatusBar();
 			footerStatusBar.setMessage("constants", PluginServices.getText(null, "all_prov"));
 		}
+	}
+
+	public void addMap(String map, View view, List<String> municipios) {
+		MapView mv = new MapView(map, view, municipios);
+		loadedMaps.add(mv);
+	}
+
+	public void removeMap(String map, View view) {
+		for (MapView mv : loadedMaps) {
+			if (mv.getView() == view) {
+				if (mv.getMap().equals(map)) {
+					loadedMaps.remove(mv);
+					break;
+				}
+			}
+		}
+	}
+
+	public boolean constantsSelected() {
+		return constatsSelected;
+	}
+
+	public List<MapView> getLoadedMaps(View view) {
+		ArrayList<MapView> mapsInView = new ArrayList<MapView>();
+		for (MapView mv : loadedMaps) {
+			if (mv.getView() == view) {
+				mapsInView.add(mv);
+			}
+		}
+		return mapsInView;
+	}
+
+	/**
+	 * It tells if the council it's the current one
+	 * @param cod
+	 * @return
+	 */
+	public boolean isSelectedCouncil(String cod) {
+		if (instance.constantsSelected()) {
+			return cod.equals(instance.getMunCod());
+		}
+		return false;
 	}
 
 }

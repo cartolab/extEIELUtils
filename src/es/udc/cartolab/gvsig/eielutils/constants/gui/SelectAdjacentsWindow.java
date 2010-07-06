@@ -25,9 +25,12 @@ import net.miginfocom.swing.MigLayout;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.constants.ConstantsUtils;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
+import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionListener {
@@ -61,6 +64,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 	private final ArrayList<CheckBoxItem> checkBoxes;
 	private JButton allCouncilsButton;
 	private JButton cleanCouncilsButton;
+	private View view;
 
 
 
@@ -74,12 +78,17 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		return viewInfo;
 	}
 
-	public SelectAdjacentsWindow(String munCod, String entCod, String nucCod) {
+	public SelectAdjacentsWindow(View view, String munCod, String entCod, String nucCod) {
 		municipio = munCod;
 		entidad = entCod;
 		nucleo = nucCod;
 		checkBoxes = new ArrayList<CheckBoxItem>();
+		this.view = view;
 		init();
+	}
+
+	public SelectAdjacentsWindow(String munCod, String entCod, String nucCod) {
+		this(null, munCod, entCod, nucCod);
 	}
 
 	private void init() {
@@ -240,7 +249,20 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					municipios.add(checkBoxes.get(i).getMun());
 				}
 			}
-			Constants cts = Constants.newConstants(municipio, entidad, nucleo, municipios);
+			Constants ctes = Constants.getCurrentConstants();
+			boolean changeMunicipio = !ctes.isSelectedCouncil(municipio);
+			ctes = Constants.newConstants(municipio, entidad, nucleo, municipios);
+			if (changeMunicipio) {
+				//call function that checks councils and reload view if necessary
+				try {
+					ConstantsUtils.reloadView(view);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				LayerOperations.zoomToConstant(view);
+			}
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 		if (event.getSource() == allCouncilsButton) {

@@ -22,12 +22,8 @@ public class EielWizard extends ElleWizard {
 		ctesCHB = new JCheckBox("Utilizar constantes seleccionadas");
 
 		Constants constants = Constants.getCurrentConstants();
-		if (constants != null) {
-			ctesCHB.setSelected(true);
-		} else {
-			ctesCHB.setSelected(false);
-			ctesCHB.setEnabled(false);
-		}
+		ctesCHB.setSelected(constants.constantsSelected());
+		ctesCHB.setEnabled(constants.constantsSelected());
 
 		add(ctesCHB, BorderLayout.SOUTH);
 	}
@@ -39,7 +35,7 @@ public class EielWizard extends ElleWizard {
 		String munField = EIELValues.FIELD_COD_MUN;
 		if (ctesCHB.isSelected()) {
 			Constants constants = Constants.getCurrentConstants();
-			if (constants!=null) {
+			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
 				List<String> councils = constants.getMunicipios();
 				for (int j=0; j<councils.size()-1; j++) {

@@ -22,10 +22,13 @@ import javax.swing.JPanel;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
 import com.iver.andami.ui.mdiManager.WindowInfo;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.jeta.forms.components.panel.FormPanel;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.constants.ConstantsUtils;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
+import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConstantSelectionWindow extends JPanel implements IWindow, ActionListener {
@@ -38,6 +41,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	private JPanel southPanel = null;
 	private JButton okButton;
 	private JButton cancelButton;
+	private View view;
 
 	private final String municipioTable = EIELValues.TABLE_MUNICIPIO;
 	private final String munCodField = EIELValues.FIELD_COD_MUN;
@@ -59,7 +63,12 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	}
 
 	public ConstantSelectionWindow() {
+		this(null);
+	}
+
+	public ConstantSelectionWindow(View view) {
 		init();
+		this.view = view;
 	}
 
 	protected JPanel getCenterPanel() {
@@ -194,7 +203,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
+
 		if (event.getSource() == cancelButton) {
 			PluginServices.getMDIManager().closeWindow(this);
 		}
@@ -210,16 +219,36 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 				}
 				//Close window
 				PluginServices.getMDIManager().closeWindow(this);
-				//hacer lo que haga falta
+
 				if (municipioCHB.isSelected()) {
-					SelectAdjacentsWindow win = new SelectAdjacentsWindow(munCod, entCod, nucCod);
+					SelectAdjacentsWindow win = new SelectAdjacentsWindow(view, munCod, entCod, nucCod);
 					PluginServices.getMDIManager().addCentredWindow(win);
 				} else {
-					Constants cts = Constants.newConstants(munCod, entCod, nucCod);
+					Constants ctes = Constants.getCurrentConstants();
+					boolean changeMunicipio = !ctes.isSelectedCouncil(munCod);
+					ctes = Constants.newConstants(munCod, entCod, nucCod);
+					if (changeMunicipio) {
+						//call function that checks councils and reload view if necessary
+						try {
+							ConstantsUtils.reloadView(view);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					if (view != null) {
+						LayerOperations.zoomToConstant(view);
+					}
 				}
 			} else {
 				Constants.removeConstants();
 				PluginServices.getMDIManager().closeWindow(this);
+				try {
+					ConstantsUtils.reloadView(view);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		}

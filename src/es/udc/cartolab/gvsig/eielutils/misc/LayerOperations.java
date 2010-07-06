@@ -12,6 +12,9 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.fmap.layers.layerOperations.AlphanumericData;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
+
+import es.udc.cartolab.gvsig.eielutils.constants.Constants;
 
 public class LayerOperations {
 
@@ -137,6 +140,27 @@ public class LayerOperations {
 			} catch (ReadDriverException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void zoomToConstant(View view) {
+		if (view != null) {
+			Constants c = Constants.getCurrentConstants();
+			if (c.getNucCod() != null && !c.getNucCod().equals("")) {
+				String codNuc = c.getNucCod();
+				String codMun = c.getMunCod();
+				String codEnt = c.getEntCod();
+				FLayer nucLayer = view.getMapControl().getMapContext().getLayers().getLayer(EIELValues.LAYER_NUCLEO);
+				if (nucLayer != null && nucLayer instanceof FLyrVect) {
+					LayerOperations.zoomToNucleo(nucLayer, codMun, codEnt, codNuc);
+				}
+			} else {
+				String codMun = c.getMunCod();
+				FLayer munLayer = view.getMapControl().getMapContext().getLayers().getLayer(EIELValues.LAYER_MUNICIPIO);
+				if (munLayer != null && munLayer instanceof FLyrVect) {
+					LayerOperations.zoomToMunicipio(munLayer, codMun);
+				}
 			}
 		}
 	}
