@@ -17,7 +17,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
@@ -51,6 +54,8 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	private final String nucCodField = EIELValues.FIELD_COD_POB;
 	private final String denominacion = EIELValues.FIELD_DENOM;
 	private final String fase = EIELValues.FASE;
+
+	private static Logger logger = Logger.getLogger(ConstantSelectionWindow.class);
 
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
@@ -225,29 +230,61 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 					PluginServices.getMDIManager().addCentredWindow(win);
 				} else {
 					Constants ctes = Constants.getCurrentConstants();
-					boolean changeMunicipio = !ctes.isSelectedCouncil(munCod);
-					ctes = Constants.newConstants(munCod, entCod, nucCod);
+					boolean changeMunicipio = ctes.constantsSelected() && !ctes.isSelectedCouncil(munCod);
 					if (changeMunicipio) {
-						//call function that checks councils and reload view if necessary
-						try {
-							ConstantsUtils.reloadView(view);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						int answer = JOptionPane.showConfirmDialog(
+								this,
+								PluginServices.getText(this, "maps_will_be_reloaded_maybe"),
+								"",
+								JOptionPane.YES_NO_OPTION);
+						if (answer == 0) {
+							ctes = Constants.newConstants(munCod, entCod, nucCod);
+							//call function that checks councils and reload view if necessary
+							try {
+								ConstantsUtils.reloadView(view);
+							} catch (Exception e) {
+								String msg = e.getMessage();
+								JOptionPane.showMessageDialog(
+										this,
+										String.format(PluginServices.getText(this, "error_loading_layers"), msg),
+										"",
+										JOptionPane.ERROR_MESSAGE,
+										null);
+								logger.error(msg, e);
+							}
+							LayerOperations.zoomToConstant(view);
 						}
-					}
-					if (view != null) {
+					} else {
+						ctes = Constants.newConstants(munCod, entCod, nucCod);
 						LayerOperations.zoomToConstant(view);
 					}
 				}
 			} else {
-				Constants.removeConstants();
 				PluginServices.getMDIManager().closeWindow(this);
-				try {
-					ConstantsUtils.reloadView(view);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (Constants.getCurrentConstants().constantsSelected()) {
+					int answer = JOptionPane.showConfirmDialog(
+							this,
+							PluginServices.getText(this, "maps_will_be_reloaded"),
+							"",
+							JOptionPane.YES_NO_OPTION);
+					if (answer == 0) {
+						Constants.removeConstants();
+						//call function that checks councils and reload view if necessary
+						try {
+							ConstantsUtils.reloadView(view);
+						} catch (Exception e) {
+							String msg = e.getMessage();
+							JOptionPane.showMessageDialog(
+									this,
+									String.format(PluginServices.getText(this, "error_loading_layers"), msg),
+									"",
+									JOptionPane.ERROR_MESSAGE,
+									null);
+							logger.error(msg, e);
+						}
+					}
+				} else {
+					Constants.removeConstants();
 				}
 			}
 

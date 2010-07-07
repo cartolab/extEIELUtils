@@ -18,9 +18,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.log4j.Logger;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiManager.IWindow;
@@ -65,6 +68,8 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 	private JButton allCouncilsButton;
 	private JButton cleanCouncilsButton;
 	private View view;
+
+	private static Logger logger = Logger.getLogger(SelectAdjacentsWindow.class);
 
 
 
@@ -251,18 +256,32 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			}
 			Constants ctes = Constants.getCurrentConstants();
 			boolean changeMunicipio = !ctes.isSelectedCouncil(municipio);
-			ctes = Constants.newConstants(municipio, entidad, nucleo, municipios);
 			if (changeMunicipio) {
-				//call function that checks councils and reload view if necessary
-				try {
-					ConstantsUtils.reloadView(view);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				int answer = JOptionPane.showConfirmDialog(
+						this,
+						"Las capas de la vista se recargarán y se perderán los cambios que no se hayan guardado. ¿Desea continuar?",
+						"",
+						JOptionPane.YES_NO_OPTION);
+				if (answer == 0) {
+					ctes = Constants.newConstants(municipio, entidad, nucleo, municipios);
+					//call function that checks councils and reload view if necessary
+					try {
+						ConstantsUtils.reloadView(view);
+					} catch (Exception e) {
+						String msg = e.getMessage();
+						JOptionPane.showMessageDialog(
+								this,
+								String.format(PluginServices.getText(this, "error_loading_layers"), msg),
+								"",
+								JOptionPane.ERROR_MESSAGE,
+								null);
+						logger.error(msg, e);
+					}
 				}
 			} else {
-				LayerOperations.zoomToConstant(view);
+				ctes = Constants.newConstants(municipio, entidad, nucleo, municipios);
 			}
+			LayerOperations.zoomToConstant(view);
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 		if (event.getSource() == allCouncilsButton) {
