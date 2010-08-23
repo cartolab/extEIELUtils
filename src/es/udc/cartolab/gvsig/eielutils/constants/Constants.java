@@ -8,9 +8,22 @@ import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiFrame.NewStatusBar;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.eielutils.misc.MapView;
 
 public class Constants {
+	
+	private enum Field {
+		FASE, PROVINCIA, MUNICIPIO, ENTIDAD, NUCLEO, POBLAMIENTO, NOVALUE;
+		
+		public static Field toField(String str) {
+			try {
+				return valueOf(str.toUpperCase());
+			} catch (Exception e) {
+				return NOVALUE;
+			}
+		}
+	}
 
 	private ArrayList<MapView> loadedMaps;
 
@@ -21,6 +34,8 @@ public class Constants {
 	private String entCod;
 	private String nucCod;
 	private boolean constatsSelected = false;
+	private String fase = EIELValues.FASE;
+	private String provincia = EIELValues.PROVINCIA;
 
 	private Constants() {
 		loadedMaps = new ArrayList<MapView>();
@@ -145,6 +160,29 @@ public class Constants {
 			return cod.equals(instance.getMunCod());
 		}
 		return false;
+	}
+	
+	/**
+	 * Gets current constant value.
+	 * @param constant should be one of fase, provincia, municipio or nucleo/poblamiento. 
+	 * @return the constant value, null if it's not set
+	 */
+	public String getValue(String constant) {
+		switch (Field.toField(constant)) {
+		case FASE:
+			return fase;
+		case PROVINCIA:
+			return provincia;
+		case MUNICIPIO:
+			return munCod;
+		case ENTIDAD:
+			return entCod;
+		case NUCLEO:
+		case POBLAMIENTO:
+			return nucCod;
+		default:
+			return null;				
+		}
 	}
 
 }
