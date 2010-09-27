@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2010. Cartolab (Universidade da Coruña)
+ * 
+ * This file is part of extUtilsEIEL
+ * 
+ * extUtilsEIEL is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or any later version.
+ * 
+ * extUtilsEIEL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with extUtilsEIEL.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.udc.cartolab.gvsig.eielutils.misc;
 
 import java.awt.geom.Rectangle2D;
@@ -105,12 +122,11 @@ public class LayerOperations {
 	private static void zoom(FLyrVect layer, int pos) {
 
 		Rectangle2D rectangle = null;
-		//		int pos = Long.valueOf(currentPosition).intValue();
 		if (layer instanceof AlphanumericData) {
 			//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
 			try {
 				IGeometry g;
-				ReadableVectorial source = (layer).getSource();
+				ReadableVectorial source = layer.getSource();
 				source.start();
 				g = source.getShape(pos);
 				source.stop();

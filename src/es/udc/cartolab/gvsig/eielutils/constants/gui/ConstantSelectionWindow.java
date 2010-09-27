@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2010. Cartolab (Universidade da Coruña)
+ * 
+ * This file is part of extUtilsEIEL
+ * 
+ * extUtilsEIEL is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or any later version.
+ * 
+ * extUtilsEIEL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with extUtilsEIEL.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package es.udc.cartolab.gvsig.eielutils.constants.gui;
 
 import java.awt.BorderLayout;
@@ -115,18 +132,13 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	protected JPanel getNorthPanel() {
 
 		//Set header if any
-		//Current header (Pontevedra) size: 425x79
 		if (northPanel == null) {
 			northPanel = new JPanel();
-			//			File iconPath = new File("gvSIG/extensiones/es.udc.cartolab.gvsig.elle/images/header.png");
 			ImageIcon logo = EIELValues.getHeader();
-			//			if (iconPath.exists()) {
 			northPanel.setBackground(EIELValues.HEADER_COLOR);
-			//				ImageIcon logo = new ImageIcon(iconPath.getAbsolutePath());
 			JLabel icon = new JLabel();
 			icon.setIcon(logo);
 			northPanel.add(icon, BorderLayout.WEST);
-			//			}
 		}
 		return northPanel;
 	}
@@ -162,7 +174,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 
 			comboBox.removeAllItems();
 
-			if ((firstItem != null) && !firstItem.equals("")) {
+			if (firstItem != null && !firstItem.equals("")) {
 				comboBox.addItem(firstItem);
 			}
 
@@ -218,7 +230,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 				String munCod = getCode(municipioCB);
 				String entCod = "";
 				String nucCod = "";
-				if ((entidadCB.getSelectedIndex()!=0) && (nucleoCB.getSelectedIndex()!=0)) {
+				if (entidadCB.getSelectedIndex()!=0 && nucleoCB.getSelectedIndex()!=0) {
 					entCod = getCode(entidadCB);
 					nucCod = getCode(nucleoCB);
 				}
@@ -335,7 +347,6 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 	}
 
 	public Object getWindowProfile() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
