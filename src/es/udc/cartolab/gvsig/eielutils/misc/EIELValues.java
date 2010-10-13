@@ -27,7 +27,7 @@ public class EIELValues {
 
 	public final static Color HEADER_COLOR = new Color(36, 46, 109);
 
-	public final static String FASE = "2009";
+	public final static String FASE = "2008";
 	public final static String PROVINCIA = "36";
 
 	/**
@@ -38,7 +38,7 @@ public class EIELValues {
 	public final static String TABLE_ENTIDAD = "entidad_singular";
 	public final static String FIELD_COD_MUN = "municipio";
 	public final static String FIELD_COD_ENT = "entidad";
-	public final static String FIELD_COD_POB = "poblamiento";
+	public final static String FIELD_COD_POB = "nucleo";
 	public final static String FIELD_DENOM = "denominaci";
 	public final static String LAYER_MUNICIPIO = "Municipio";
 	public final static String LAYER_NUCLEO = "Nucleo población";
