@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. Cartolab (Universidade da Coruña)
- * 
+ *
  * This file is part of extUtilsEIEL
- * 
+ *
  * extUtilsEIEL is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * extUtilsEIEL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with extUtilsEIEL.
  * If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,6 +28,7 @@ import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizardComponent;
 import es.udc.cartolab.gvsig.elle.utils.LoadMap;
+import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 
@@ -44,15 +45,18 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 			Constants constants = Constants.getCurrentConstants();
 			String whereClause = "";
 			String munField = EIELValues.FIELD_COD_MUN;
+			DBSession dbs = DBSession.getCurrentSession();
+			String munTable = "\"" + dbs.getSchema() + "\".\"" + EIELValues.TABLE_MUNICIPIO + "\"";
 			List<String> municipios = null;
 			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
 				municipios = constants.getMunicipios();
-				for (int j=0; j<municipios.size()-1; j++) {
-					whereClause = whereClause.concat(munField + "='" + municipios.get(j) +
-					"' OR ");
+				for (int j=0; j<municipios.size(); j++) {
+					String subquery = "(SELECT the_geom FROM " + munTable + " WHERE " + munField + "='" + municipios.get(j) + "' LIMIT 1)";
+					whereClause = whereClause.concat("ST_Intersects(the_geom, " + subquery + ") OR ");
 				}
-				whereClause = whereClause.concat(munField + "='" + municipios.get(municipios.size()-1) + "'");
+				whereClause = whereClause.substring(0, whereClause.length()-3);
+				System.out.println(whereClause);
 			}
 			try {
 				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
