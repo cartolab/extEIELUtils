@@ -40,8 +40,8 @@ public class EIELValues {
 	public final static String FIELD_COD_ENT = "entidad";
 	public final static String FIELD_COD_POB = "nucleo";
 	public final static String FIELD_DENOM = "denominaci";
-	public final static String LAYER_MUNICIPIO = "Municipio";
-	public final static String LAYER_NUCLEO = "Nucleo población";
+	public final static String LAYER_MUNICIPIO = "Municipios";
+	public final static String LAYER_NUCLEO = "Núcleos";
 
 
 	public static ImageIcon getHeader() {
