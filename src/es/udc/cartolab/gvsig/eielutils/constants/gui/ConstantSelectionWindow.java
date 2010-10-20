@@ -299,7 +299,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 					Constants.removeConstants();
 				}
 			}
-
+			PluginServices.getMainFrame().enableControls();
 		}
 		if (event.getSource() == municipioCB) {
 			if (municipioCB.getSelectedIndex() != 0) {
