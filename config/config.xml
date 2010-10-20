@@ -16,13 +16,13 @@
 			<menu text="EIEL/connectToEIEL"
 				icon="DBConnect"
 				action-command="DBConnect"
-				position="01"/> 
+				position="0100"/> 
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.ConstantSelectionExtension" description="Select Constants" active="true">
 			<menu text="EIEL/selectConstants"
 				icon="constants"
 				action-command="SelectConstants"
-				position="02"/>
+				position="0200"/>
 			<tool-bar name="EIEL">
 				<action-tool icon="constants" tooltip="SelectConstants"
 					action-command="SelectConstants" position="01"/>
@@ -32,7 +32,7 @@
 			<menu text="EIEL/Load_map"
 				icon="load-map"
 				action-command="LoadMap"
-				position="03"/>  
+				position="0300"/>  
 			<tool-bar name="ELLE">
 				<action-tool icon="load-map" tooltip="Load_map"
 					action-command="LoadMap" position="1" name="load-map" />
@@ -42,7 +42,7 @@
 			<menu text="EIEL/load_legends"
 				icon="load-legends"
 				action-command="LOADLEGENDS"
-				position="0900"/>
+				position="0500"/>
 			<tool-bar name="ELLE">
 				<action-tool icon="load-legends" tooltip="load_legends"
 					action-command="LOADLEGENDS" position="3" name="load-legends" />
@@ -51,17 +51,17 @@
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.SaveAllLegendsExtension" description="Save_several_legends" active="true">
 			<menu text="EIEL/Save_legends/Leg_actives"
 				action-command="ACTIVES"
-				position="0910"/> 
+				position="0610"/> 
 			<menu text="EIEL/Save_legends/Leg_visibles"
 				action-command="VISIBLES"
-				position="0920"/>
+				position="0620"/>
 			<menu text="EIEL/Save_legends/Leg_map_overview"
 				action-command="MAPOVERVIEW"
-				position="0930" />
+				position="0630" />
 			<menu text="EIEL/Save_legends/Leg_all"
 				icon="save-all-legends"
 				action-command="ALL"
-				position="0940"/>
+				position="0640"/>
 			<tool-bar name="ELLE">
 				<action-tool icon="save-all-legends" tooltip="Save_legends"
 					action-command="ALL" position="4" name="save-all-legends" />
@@ -81,12 +81,12 @@
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.CreateUserExtension" description="New User" active="true">
 			<menu text="EIEL/manage_users/create_new_user"
 				action-command="NewUser"
-				position="1010"/> 
+				position="0810"/> 
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.ChangePassExtension" description="Change password" active="true">
 			<menu text="EIEL/manage_users/change_password"
 				action-command="CHPWD"
-				position="1000"/> 
+				position="0800"/> 
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.CloseSessionExtension" description="Change password" active="true">
 			<tool-bar name="DBConnection">
@@ -101,13 +101,13 @@
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.DropUserExtension" description="Change password" active="true">
 			<menu text="EIEL/manage_users/drop_user"
 				action-command="DROP"
-				position="1020"/> 
+				position="0820"/> 
 		</extension>
 				<extension class-name="es.udc.cartolab.gvsig.eielutils.SaveMapExtension" description="save_map" active="true">
 			<menu text="EIEL/save_map"
 				icon="save-map"
 				action-command="SaveMap"
-				position="04" />
+				position="0400" />
 			<tool-bar name="ELLE">
 				<action-tool icon="save-map" tooltip="save_map"
 					action-command="SaveMap" position="2" name="save-map" />
