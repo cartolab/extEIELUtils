@@ -59,7 +59,8 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 				System.out.println(whereClause);
 			}
 			try {
-				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
+				//TODO change layer loading system to get the intersection with municipio layer as fast as we can
+				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
 				constants.addMap(mapList.getSelectedValue().toString(), view, municipios);
 				LayerOperations.zoomToConstant(view);
 			} catch (Exception e) {
