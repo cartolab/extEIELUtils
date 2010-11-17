@@ -36,6 +36,8 @@ public class EIELValues {
 	public final static String TABLE_MUNICIPIO = "municipio";
 	public final static String TABLE_NUCLEO = "nucleo_poblacion";
 	public final static String TABLE_ENTIDAD = "entidad_singular";
+	public final static String FIELD_FASE = "fase";
+	public final static String FIELD_COD_PRO = "provincia";
 	public final static String FIELD_COD_MUN = "municipio";
 	public final static String FIELD_COD_ENT = "entidad";
 	public final static String FIELD_COD_POB = "nucleo";
