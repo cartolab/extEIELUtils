@@ -51,16 +51,15 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
 				municipios = constants.getMunicipios();
-				for (int j=0; j<municipios.size(); j++) {
-					String subquery = "(SELECT the_geom FROM " + munTable + " WHERE " + munField + "='" + municipios.get(j) + "' LIMIT 1)";
-					whereClause = whereClause.concat("ST_Intersects(the_geom, " + subquery + ") OR ");
+				for (String municipio :  municipios) {
+					whereClause = whereClause.concat(munField + "= '" + municipio + "' OR ");
 				}
 				whereClause = whereClause.substring(0, whereClause.length()-3);
 				System.out.println(whereClause);
 			}
 			try {
 				//TODO change layer loading system to get the intersection with municipio layer as fast as we can
-				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj());
+				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
 				constants.addMap(mapList.getSelectedValue().toString(), view, municipios);
 				LayerOperations.zoomToConstant(view);
 			} catch (Exception e) {
