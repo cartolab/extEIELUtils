@@ -20,8 +20,10 @@ package es.udc.cartolab.gvsig.eielutils;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.andami.ui.mdiManager.IWindow;
+import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.udc.cartolab.gvsig.eielutils.constants.ConstantGeometryListener;
 import es.udc.cartolab.gvsig.eielutils.constants.gui.ConstantLabel;
 import es.udc.cartolab.gvsig.eielutils.constants.gui.ConstantSelectionWindow;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
@@ -50,6 +52,8 @@ public class ConstantSelectionExtension extends Extension {
 				"constants",
 				this.getClass().getClassLoader().getResource("images/ctes.png")
 			);
+
+		CADListenerManager.addEndGeometryListener(this.getClass().getName(), new ConstantGeometryListener());
 	}
 
 	public boolean isEnabled() {
