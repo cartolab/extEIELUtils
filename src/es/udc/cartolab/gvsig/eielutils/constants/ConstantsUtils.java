@@ -22,8 +22,8 @@ import java.util.List;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
+import es.udc.cartolab.gvsig.eielutils.misc.LoadEIELMap;
 import es.udc.cartolab.gvsig.eielutils.misc.MapView;
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
 
 public class ConstantsUtils {
 
@@ -60,24 +60,13 @@ public class ConstantsUtils {
 				}
 			}
 			for (MapView map : maps) {
-				List<String> mapMuns = map.getMunicipios();
-				boolean allInside = mapMuns == null;
-				if (mapMuns != null && ctsMuns!=null) {
-					allInside = true;
-					for (String mun : ctsMuns) {
-						if (!mapMuns.contains(mun)) {
-							allInside = false;
-							break;
-						}
-					}
-				}
-				if (!allInside) {
+				if (map.reloadNeeded(ctsMuns)) {
 					//remove map
-					LoadMap.getInstance().removeMap(view, map.getMap());
+					LoadEIELMap.getInstance().removeMap(view, map.getMap());
 					constants.removeMap(map.getMap(), view);
 
 					//load the map again
-					LoadMap.getInstance().loadMap(view, map.getMap(), view.getProjection(), whereClause);
+					LoadEIELMap.getInstance().loadMap(view, map.getMap(), view.getProjection(), whereClause);
 					constants.addMap(map.getMap(), view, ctsMuns);
 
 					reloaded = true;
@@ -86,6 +75,20 @@ public class ConstantsUtils {
 		}
 
 		return reloaded;
+	}
+
+
+	public static boolean reloadNeeded(View view, List<String> munCodes) {
+
+		Constants constants = Constants.getCurrentConstants();
+
+		List<MapView> maps = constants.getLoadedMaps(view);
+		for (MapView map : maps) {
+			if (map.reloadNeeded(munCodes)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. Cartolab (Universidade da Coruña)
- * 
+ *
  * This file is part of extUtilsEIEL
- * 
+ *
  * extUtilsEIEL is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * extUtilsEIEL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with extUtilsEIEL.
  * If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,6 +28,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -237,20 +239,27 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 				//Close window
 				PluginServices.getMDIManager().closeWindow(this);
 
+				List<String> municipios;
 				if (municipioCHB.isSelected()) {
 					SelectAdjacentsWindow win = new SelectAdjacentsWindow(view, munCod, entCod, nucCod);
-					PluginServices.getMDIManager().addCentredWindow(win);
+					win.open();
+					municipios = win.getSelectedMuns();
 				} else {
-					Constants ctes = Constants.getCurrentConstants();
-					boolean changeMunicipio = ctes.constantsSelected() && !ctes.isSelectedCouncil(munCod);
-					if (changeMunicipio) {
+					municipios = new ArrayList<String>();
+					municipios.add(munCod);
+				}
+				Constants ctes = Constants.getCurrentConstants();
+//				boolean changeMunicipio = ctes.constantsSelected() && !ctes.isSelectedCouncil(munCod);
+//				if (changeMunicipio) {
+
+					if (ConstantsUtils.reloadNeeded(view, municipios)) {
 						int answer = JOptionPane.showConfirmDialog(
 								this,
 								PluginServices.getText(this, "maps_will_be_reloaded_maybe"),
 								"",
 								JOptionPane.YES_NO_OPTION);
 						if (answer == 0) {
-							ctes = Constants.newConstants(munCod, entCod, nucCod);
+							ctes = Constants.newConstants(munCod, entCod, nucCod, municipios);
 							//call function that checks councils and reload view if necessary
 							try {
 								ConstantsUtils.reloadView(view);
@@ -267,10 +276,13 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 							LayerOperations.zoomToConstant(view);
 						}
 					} else {
-						ctes = Constants.newConstants(munCod, entCod, nucCod);
-						LayerOperations.zoomToConstant(view);
+						ctes = Constants.newConstants(munCod, entCod, nucCod, municipios);
 					}
-				}
+//				} else {
+//					ctes = Constants.newConstants(munCod, entCod, nucCod);
+//					LayerOperations.zoomToConstant(view);
+//				}
+
 			} else {
 				PluginServices.getMDIManager().closeWindow(this);
 				if (Constants.getCurrentConstants().constantsSelected()) {
