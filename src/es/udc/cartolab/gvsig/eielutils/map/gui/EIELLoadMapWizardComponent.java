@@ -25,10 +25,9 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
+import es.udc.cartolab.gvsig.eielutils.misc.LoadEIELMap;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizardComponent;
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
-import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 
@@ -45,8 +44,6 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 			Constants constants = Constants.getCurrentConstants();
 			String whereClause = "";
 			String munField = EIELValues.FIELD_COD_MUN;
-			DBSession dbs = DBSession.getCurrentSession();
-			String munTable = "\"" + dbs.getSchema() + "\".\"" + EIELValues.TABLE_MUNICIPIO + "\"";
 			List<String> municipios = null;
 			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
@@ -58,8 +55,7 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 				System.out.println(whereClause);
 			}
 			try {
-				//TODO change layer loading system to get the intersection with municipio layer as fast as we can
-				LoadMap.loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
+				LoadEIELMap.getInstance().loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
 				constants.addMap(mapList.getSelectedValue().toString(), view, municipios);
 				LayerOperations.zoomToConstant(view);
 			} catch (Exception e) {
