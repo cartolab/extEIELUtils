@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2010. Cartolab (Universidade da Coruña)
- * 
+ *
  * This file is part of extUtilsEIEL
- * 
+ *
  * extUtilsEIEL is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or any later version.
- * 
+ *
  * extUtilsEIEL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with extUtilsEIEL.
  * If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,16 +23,14 @@ import java.util.List;
 import com.iver.andami.PluginServices;
 import com.iver.andami.ui.mdiFrame.MDIFrame;
 import com.iver.andami.ui.mdiFrame.NewStatusBar;
-import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
-import es.udc.cartolab.gvsig.eielutils.misc.MapView;
 
 public class Constants {
-	
+
 	private enum Field {
 		FASE, PROVINCIA, MUNICIPIO, ENTIDAD, NUCLEO, POBLAMIENTO, NOVALUE;
-		
+
 		public static Field toField(String str) {
 			try {
 				return valueOf(str.toUpperCase());
@@ -41,8 +39,6 @@ public class Constants {
 			}
 		}
 	}
-
-	private ArrayList<MapView> loadedMaps;
 
 	private static Constants instance = null;
 
@@ -55,7 +51,6 @@ public class Constants {
 	private String provincia = EIELValues.PROVINCIA;
 
 	private Constants() {
-		loadedMaps = new ArrayList<MapView>();
 	}
 	/**
 	 * @return user defined constants, or null if they're not defined yet.
@@ -137,34 +132,8 @@ public class Constants {
 		}
 	}
 
-	public void addMap(String map, View view, List<String> municipios) {
-		MapView mv = new MapView(map, view, municipios);
-		loadedMaps.add(mv);
-	}
-
-	public void removeMap(String map, View view) {
-		for (MapView mv : loadedMaps) {
-			if (mv.getView() == view) {
-				if (mv.getMap().equals(map)) {
-					loadedMaps.remove(mv);
-					break;
-				}
-			}
-		}
-	}
-
 	public boolean constantsSelected() {
 		return constatsSelected;
-	}
-
-	public List<MapView> getLoadedMaps(View view) {
-		ArrayList<MapView> mapsInView = new ArrayList<MapView>();
-		for (MapView mv : loadedMaps) {
-			if (mv.getView() == view) {
-				mapsInView.add(mv);
-			}
-		}
-		return mapsInView;
 	}
 
 	/**
@@ -178,10 +147,10 @@ public class Constants {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Gets current constant value.
-	 * @param constant should be one of fase, provincia, municipio or nucleo/poblamiento. 
+	 * @param constant should be one of fase, provincia, municipio or nucleo/poblamiento.
 	 * @return the constant value, null if it's not set
 	 */
 	public String getValue(String constant) {
@@ -198,7 +167,7 @@ public class Constants {
 		case POBLAMIENTO:
 			return nucCod;
 		default:
-			return null;				
+			return null;
 		}
 	}
 

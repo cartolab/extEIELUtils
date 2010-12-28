@@ -23,11 +23,13 @@ import java.util.Map;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELMap;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
-import es.udc.cartolab.gvsig.eielutils.misc.LoadEIELMap;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELMapDAO;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizardComponent;
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 
 public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 
@@ -55,8 +57,14 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 				System.out.println(whereClause);
 			}
 			try {
-				LoadEIELMap.getInstance().loadMap(view, mapList.getSelectedValue().toString(), crsPanel.getCurProj(), whereClause);
-				constants.addMap(mapList.getSelectedValue().toString(), view, municipios);
+				ELLEMap map = EIELMapDAO.getInstance().getMap(view, mapList.getSelectedValue().toString(), whereClause);
+				if (map instanceof EIELMap) {
+					EIELMap auxmap = (EIELMap) map;
+					auxmap.setMunicipios(municipios);
+					auxmap.setWhereClause(whereClause);
+				}
+				map.load(crsPanel.getCurProj());
+
 				LayerOperations.zoomToConstant(view);
 			} catch (Exception e) {
 				throw new WizardException(e);

@@ -19,11 +19,15 @@ package es.udc.cartolab.gvsig.eielutils.constants;
 
 import java.util.List;
 
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
+import com.iver.utiles.XMLEntity;
 
+import es.udc.cartolab.gvsig.eielutils.misc.EIELMap;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
-import es.udc.cartolab.gvsig.eielutils.misc.LoadEIELMap;
-import es.udc.cartolab.gvsig.eielutils.misc.MapView;
+import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 
 public class ConstantsUtils {
 
@@ -42,7 +46,6 @@ public class ConstantsUtils {
 		boolean reloaded = false;
 		if (view != null) {
 			Constants constants = Constants.getCurrentConstants();
-			List<MapView> maps = constants.getLoadedMaps(view);
 
 			//where clause for the new load
 			String whereClause = "";
@@ -59,19 +62,32 @@ public class ConstantsUtils {
 					whereClause = whereClause.concat(munField + "='" + ctsMuns.get(ctsMuns.size()-1) + "'");
 				}
 			}
-			for (MapView map : maps) {
-				if (map.reloadNeeded(ctsMuns)) {
-					//remove map
-					LoadEIELMap.getInstance().removeMap(view, map.getMap());
-					constants.removeMap(map.getMap(), view);
 
-					//load the map again
-					LoadEIELMap.getInstance().loadMap(view, map.getMap(), view.getProjection(), whereClause);
-					constants.addMap(map.getMap(), view, ctsMuns);
-
-					reloaded = true;
+			for (ELLEMap map : MapDAO.getInstance().getLoadedMaps()) {
+				if (map instanceof EIELMap) {
+					EIELMap eielmap = (EIELMap) map;
+					if (eielmap.reloadNeeded(ctsMuns)) {
+						eielmap.setMunicipios(ctsMuns);
+						eielmap.setWhereClause(whereClause);
+						map.reload();
+						reloaded = true;
+					}
 				}
 			}
+
+//			for (MapView map : maps) {
+//				if (map.reloadNeeded(ctsMuns)) {
+//					//remove map
+//					LoadEIELMap.getInstance().removeMap(view, map.getMap());
+//					constants.removeMap(map.getMap(), view);
+//
+//					//load the map again
+//					LoadEIELMap.getInstance().getMap(view, map.getMap(), whereClause, map.getLegendType(), map.getLegend());
+//					constants.addMap(map.getMap(), view, ctsMuns, map.getLegendType(), map.getLegend());
+//
+//					reloaded = true;
+//				}
+//			}
 		}
 
 		return reloaded;
@@ -80,15 +96,25 @@ public class ConstantsUtils {
 
 	public static boolean reloadNeeded(View view, List<String> munCodes) {
 
-		Constants constants = Constants.getCurrentConstants();
-
-		List<MapView> maps = constants.getLoadedMaps(view);
-		for (MapView map : maps) {
-			if (map.reloadNeeded(munCodes)) {
-				return true;
+		for (ELLEMap map : MapDAO.getInstance().getLoadedMaps()) {
+			if (map instanceof EIELMap) {
+				EIELMap eielmap = (EIELMap) map;
+				if (eielmap.reloadNeeded(munCodes)) {
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	private static String getLegendDir() {
+
+		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
+		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
+			return xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+		}
+
+		return null;
 	}
 
 }

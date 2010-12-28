@@ -21,33 +21,65 @@
 package es.udc.cartolab.gvsig.eielutils.misc;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.cresques.cts.IProjection;
 
 import com.iver.cit.gvsig.fmap.drivers.DBException;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.project.documents.view.gui.View;
 
-import es.udc.cartolab.gvsig.elle.utils.LoadMap;
+import es.udc.cartolab.gvsig.elle.gui.wizard.save.LayerProperties;
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
+import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class LoadEIELMap extends LoadMap {
+public class EIELMapDAO extends MapDAO {
 
-	private static LoadEIELMap instance = null;
+	private static EIELMapDAO instance = null;
 
 	private synchronized static void createInstance() {
 		if (instance == null) {
-			instance = new LoadEIELMap();
+			instance = new EIELMapDAO();
 		}
 	}
 
-	public static LoadEIELMap getInstance() {
+	public static EIELMapDAO getInstance() {
 		if (instance == null) {
 			createInstance();
 		}
 		return instance;
 	}
 
-	public  FLayer getLayer(String layerName, String tableName,
+	public ELLEMap getMap(View view, String mapName,
+			String whereClause, int stylesSource, String stylesName) throws Exception {
+
+		if (whereClause == null) {
+			whereClause = "";
+		}
+
+		EIELMap map = new EIELMap(mapName, view);
+		map.setWhereClause(whereClause);
+
+		List<LayerProperties> viewLayers = getViewLayers(mapName);
+		for (LayerProperties lp : viewLayers) {
+			map.addLayer(lp);
+		}
+
+			/////////////// MapOverview
+		List<LayerProperties> overviewLayers = getOverviewLayers(mapName);
+		for (LayerProperties lp : overviewLayers) {
+			map.addOverviewLayer(lp);
+		}
+
+		map.setStyleSource(stylesSource);
+		map.setStyleName(stylesName);
+
+		return map;
+
+	}
+
+	protected FLayer getLayer(String layerName, String tableName,
 			String schema, String whereClause, IProjection proj,
 			boolean visible) throws SQLException, DBException {
 		DBSession dbs = DBSession.getCurrentSession();
@@ -89,5 +121,6 @@ public class LoadEIELMap extends LoadMap {
 		return false;
 
 	}
+
 
 }

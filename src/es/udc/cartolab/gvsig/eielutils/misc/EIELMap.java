@@ -19,31 +19,27 @@ package es.udc.cartolab.gvsig.eielutils.misc;
 
 import java.util.List;
 
-import com.iver.cit.gvsig.project.documents.view.gui.View;
+import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
-public class MapView {
+import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 
-	private String map;
-	private View view;
+public class EIELMap extends ELLEMap{
+
+	public EIELMap(String name, BaseView view) {
+		super(name, view);
+	}
+
 	private List<String> municipios;
-
-	public MapView(String map, View view, List<String> municipios) {
-		this.map = map;
-		this.view = view;
-		this.municipios = municipios;
-	}
-
-	public String getMap() {
-		return map;
-	}
-
-	public View getView() {
-		return view;
-	}
 
 	public List<String> getMunicipios() {
 		return municipios;
 	}
+
+
+	public void setMunicipios(List<String> municipios) {
+		this.municipios = municipios;
+	}
+
 
 	public boolean reloadNeeded(List<String> munCodes) {
 		if (municipios!=null && munCodes!=null) {
