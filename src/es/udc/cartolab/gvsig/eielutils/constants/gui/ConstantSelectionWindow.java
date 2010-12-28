@@ -221,140 +221,160 @@ public class ConstantSelectionWindow extends JPanel implements IWindow, ActionLi
 		setFocusCycleRoot(true);
 	}
 
+	private List<String> getMunicipiosToLoad(String munCod, String entCod, String nucCod) {
+		List<String> municipios;
+		if (municipioCHB.isSelected()) {
+			SelectAdjacentsWindow win = new SelectAdjacentsWindow(view, munCod, entCod, nucCod);
+			win.open();
+			municipios = win.getSelectedMuns();
+		} else {
+			municipios = new ArrayList<String>();
+			municipios.add(munCod);
+		}
+		return municipios;
+	}
+
+	private void setConstants() {
+		//Get codes
+		String munCod = getCode(municipioCB);
+		String entCod = "";
+		String nucCod = "";
+		if (entidadCB.getSelectedIndex()!=0 && nucleoCB.getSelectedIndex()!=0) {
+			entCod = getCode(entidadCB);
+			nucCod = getCode(nucleoCB);
+		}
+		//Close window
+		PluginServices.getMDIManager().closeWindow(this);
+
+		List<String> municipios = getMunicipiosToLoad(munCod, entCod, nucCod);
+
+		if (ConstantsUtils.reloadNeeded(view, municipios)) {
+			int answer = JOptionPane.showConfirmDialog(
+					this,
+					PluginServices.getText(this, "maps_will_be_reloaded"),
+					"",
+					JOptionPane.YES_NO_OPTION);
+			if (answer == 0) {
+				Constants.newConstants(munCod, entCod, nucCod, municipios);
+				//call function that checks councils and reload view if necessary
+				try {
+					ConstantsUtils.reloadView(view);
+				} catch (Exception e) {
+					String msg = e.getMessage();
+					JOptionPane.showMessageDialog(
+							this,
+							String.format(PluginServices.getText(this, "error_loading_layers"), msg),
+							"",
+							JOptionPane.ERROR_MESSAGE,
+							null);
+					logger.error(msg, e);
+				}
+				LayerOperations.zoomToConstant(view);
+			}
+		} else {
+			Constants.newConstants(munCod, entCod, nucCod, municipios);
+		}
+	}
+
+
+	private void noConstants() {
+		PluginServices.getMDIManager().closeWindow(this);
+		if (Constants.getCurrentConstants().constantsSelected()) {
+			int answer = JOptionPane.showConfirmDialog(
+					this,
+					PluginServices.getText(this, "maps_will_be_reloaded"),
+					"",
+					JOptionPane.YES_NO_OPTION);
+			if (answer == 0) {
+				Constants.removeConstants();
+				//call function that checks councils and reload view if necessary
+				try {
+					ConstantsUtils.reloadView(view);
+				} catch (Exception e) {
+					String msg = e.getMessage();
+					JOptionPane.showMessageDialog(
+							this,
+							String.format(PluginServices.getText(this, "error_loading_layers"), msg),
+							"",
+							JOptionPane.ERROR_MESSAGE,
+							null);
+					logger.error(msg, e);
+				}
+			}
+		} else {
+			Constants.removeConstants();
+		}
+	}
+
+
+	private void onOk() {
+		if (municipioCB.getSelectedIndex() != 0) {
+			setConstants();
+		} else {
+			noConstants();
+		}
+		PluginServices.getMainFrame().enableControls();
+	}
+
+	private void onMunSelected() {
+		if (municipioCB.getSelectedIndex() != 0) {
+			String cod = getCode(municipioCB);
+			try {
+				entidadCB.removeActionListener(this);
+				String text = PluginServices.getText(this, "all_ent");
+				fillComboBox(text, entidadTable, entCodField,
+						"WHERE fase='" + fase + "' AND " + munCodField + "='" + cod + "'",
+						entidadCB);
+				entidadCB.addActionListener(this);
+				entidadCB.setSelectedIndex(0);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			municipioCHB.setEnabled(true);
+		} else {
+			entidadCB.removeActionListener(this);
+			entidadCB.removeAllItems();
+			entidadCB.addActionListener(this);
+			municipioCHB.setEnabled(false);
+		}
+	}
+
+	private void onEntSelected() {
+		if (entidadCB.getSelectedIndex()!=0) {
+			String entCod = getCode(entidadCB);
+			String munCod = getCode(municipioCB);
+			System.out.println("WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
+					+ entCodField + "='" + entCod + "'");
+			try {
+				String text = PluginServices.getText(this, "all_nuc");
+				fillComboBox(text, nucleoTable, nucCodField,
+						"WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
+						+ entCodField + "='" + entCod + "'",
+						nucleoCB);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			nucleoCB.removeAllItems();
+		}
+	}
+
+
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource() == cancelButton) {
 			PluginServices.getMDIManager().closeWindow(this);
 		}
 		if (event.getSource() == okButton) {
-			if (municipioCB.getSelectedIndex() != 0) {
-				//Get codes
-				String munCod = getCode(municipioCB);
-				String entCod = "";
-				String nucCod = "";
-				if (entidadCB.getSelectedIndex()!=0 && nucleoCB.getSelectedIndex()!=0) {
-					entCod = getCode(entidadCB);
-					nucCod = getCode(nucleoCB);
-				}
-				//Close window
-				PluginServices.getMDIManager().closeWindow(this);
-
-				List<String> municipios;
-				if (municipioCHB.isSelected()) {
-					SelectAdjacentsWindow win = new SelectAdjacentsWindow(view, munCod, entCod, nucCod);
-					win.open();
-					municipios = win.getSelectedMuns();
-				} else {
-					municipios = new ArrayList<String>();
-					municipios.add(munCod);
-				}
-				Constants ctes = Constants.getCurrentConstants();
-//				boolean changeMunicipio = ctes.constantsSelected() && !ctes.isSelectedCouncil(munCod);
-//				if (changeMunicipio) {
-
-					if (ConstantsUtils.reloadNeeded(view, municipios)) {
-						int answer = JOptionPane.showConfirmDialog(
-								this,
-								PluginServices.getText(this, "maps_will_be_reloaded_maybe"),
-								"",
-								JOptionPane.YES_NO_OPTION);
-						if (answer == 0) {
-							ctes = Constants.newConstants(munCod, entCod, nucCod, municipios);
-							//call function that checks councils and reload view if necessary
-							try {
-								ConstantsUtils.reloadView(view);
-							} catch (Exception e) {
-								String msg = e.getMessage();
-								JOptionPane.showMessageDialog(
-										this,
-										String.format(PluginServices.getText(this, "error_loading_layers"), msg),
-										"",
-										JOptionPane.ERROR_MESSAGE,
-										null);
-								logger.error(msg, e);
-							}
-							LayerOperations.zoomToConstant(view);
-						}
-					} else {
-						ctes = Constants.newConstants(munCod, entCod, nucCod, municipios);
-					}
-//				} else {
-//					ctes = Constants.newConstants(munCod, entCod, nucCod);
-//					LayerOperations.zoomToConstant(view);
-//				}
-
-			} else {
-				PluginServices.getMDIManager().closeWindow(this);
-				if (Constants.getCurrentConstants().constantsSelected()) {
-					int answer = JOptionPane.showConfirmDialog(
-							this,
-							PluginServices.getText(this, "maps_will_be_reloaded"),
-							"",
-							JOptionPane.YES_NO_OPTION);
-					if (answer == 0) {
-						Constants.removeConstants();
-						//call function that checks councils and reload view if necessary
-						try {
-							ConstantsUtils.reloadView(view);
-						} catch (Exception e) {
-							String msg = e.getMessage();
-							JOptionPane.showMessageDialog(
-									this,
-									String.format(PluginServices.getText(this, "error_loading_layers"), msg),
-									"",
-									JOptionPane.ERROR_MESSAGE,
-									null);
-							logger.error(msg, e);
-						}
-					}
-				} else {
-					Constants.removeConstants();
-				}
-			}
-			PluginServices.getMainFrame().enableControls();
+			onOk();
 		}
 		if (event.getSource() == municipioCB) {
-			if (municipioCB.getSelectedIndex() != 0) {
-				String cod = getCode(municipioCB);
-				try {
-					entidadCB.removeActionListener(this);
-					String text = PluginServices.getText(this, "all_ent");
-					fillComboBox(text, entidadTable, entCodField,
-							"WHERE fase='" + fase + "' AND " + munCodField + "='" + cod + "'",
-							entidadCB);
-					entidadCB.addActionListener(this);
-					entidadCB.setSelectedIndex(0);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				municipioCHB.setEnabled(true);
-			} else {
-				entidadCB.removeActionListener(this);
-				entidadCB.removeAllItems();
-				entidadCB.addActionListener(this);
-				municipioCHB.setEnabled(false);
-			}
+			onMunSelected();
 		}
 		if (event.getSource() == entidadCB) {
-			if (entidadCB.getSelectedIndex()!=0) {
-				String entCod = getCode(entidadCB);
-				String munCod = getCode(municipioCB);
-				System.out.println("WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
-						+ entCodField + "='" + entCod + "'");
-				try {
-					String text = PluginServices.getText(this, "all_nuc");
-					fillComboBox(text, nucleoTable, nucCodField,
-							"WHERE fase='" + fase + "' AND " + munCodField + "='" + munCod + "' AND "
-							+ entCodField + "='" + entCod + "'",
-							nucleoCB);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				nucleoCB.removeAllItems();
-			}
+			onEntSelected();
 		}
 	}
 
