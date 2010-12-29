@@ -53,12 +53,10 @@ public class ConstantLabel extends JLabel implements IControl {
 		return text;
 	}
 
-	@Override
 	public String getName() {
 		return "constants";
 	}
 
-	@Override
 	public void setName(String name) {
 
 	}

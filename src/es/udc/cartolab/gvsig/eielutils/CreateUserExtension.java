@@ -23,7 +23,6 @@ import es.udc.cartolab.gvsig.users.gui.CreateUserWindow;
 
 public class CreateUserExtension extends es.udc.cartolab.gvsig.users.CreateUserExtension {
 
-	@Override
 	public void execute(String actionCommand) {
 
 		CreateUserWindow window = new EIELCreateUserWindow(EIELValues.getHeader(), EIELValues.HEADER_COLOR);

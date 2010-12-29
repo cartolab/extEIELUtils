@@ -30,7 +30,6 @@ import es.udc.cartolab.gvsig.users.gui.DBConnectionDialog;
 
 public class DBConnectionExtension extends es.udc.cartolab.gvsig.users.DBConnectionExtension {
 
-	@Override
 	public void execute(String actionCommand) {
 
 		//with header image (Pontevedra)
@@ -38,7 +37,6 @@ public class DBConnectionExtension extends es.udc.cartolab.gvsig.users.DBConnect
 		dialog.openWindow();
 	}
 
-	@Override
 	public void initialize() {
 		super.initialize();
 

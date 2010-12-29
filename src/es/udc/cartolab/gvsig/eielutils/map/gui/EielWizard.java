@@ -30,7 +30,6 @@ public class EielWizard extends ElleWizard {
 
 	private JCheckBox ctesCHB;
 
-	@Override
 	public void initWizard() {
 
 		super.initWizard();
@@ -45,7 +44,6 @@ public class EielWizard extends ElleWizard {
 		add(ctesCHB, BorderLayout.SOUTH);
 	}
 
-	@Override
 	protected String getWhereClause() {
 		String whereClause = "";
 		String munField = EIELValues.FIELD_COD_MUN;

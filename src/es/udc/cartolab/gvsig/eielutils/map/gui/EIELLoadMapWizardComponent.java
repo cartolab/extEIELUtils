@@ -38,7 +38,6 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 
 	}
 
-	@Override
 	public void finish() throws WizardException {
 		Object aux = properties.get(PROPERTY_VEW);
 		if (aux!=null && aux instanceof View) {

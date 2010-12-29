@@ -45,7 +45,6 @@ public class EIELCreateUserWindow extends CreateUserWindow {
 		}
 	}
 
-	@Override
 	protected void grantRole(Connection con, String username) throws SQLException {
 		if (items.containsKey(typeCB.getSelectedItem())) {
 			DBAdminUtils.grantRole(con, username, items.get(typeCB.getSelectedItem()));
