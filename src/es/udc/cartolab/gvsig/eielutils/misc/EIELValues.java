@@ -18,12 +18,14 @@
 package es.udc.cartolab.gvsig.eielutils.misc;
 
 import java.awt.Color;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 
 public class EIELValues {
 
 	public final static String HEADER_PATH = "gvSIG/extensiones/es.udc.cartolab.gvsig.eielutils/images/header_pontevedra.png";
+	public final static String HEADER_PATH_NT = "gvSIG/extensiones/es.udc.cartolab.gvsig.eielutils/images/navtable_header_pontevedra.png";
 
 	public final static Color HEADER_COLOR = new Color(36, 46, 109);
 
@@ -48,6 +50,18 @@ public class EIELValues {
 
 	public static ImageIcon getHeader() {
 		return new ImageIcon(HEADER_PATH);
+	}
+
+	public static File getHeaderFile() {
+		return new File(HEADER_PATH);
+	}
+
+	public static ImageIcon getHeaderNT() {
+		return new ImageIcon(HEADER_PATH_NT);
+	}
+
+	public static File getHeaderFileNT() {
+		return new File(HEADER_PATH_NT);
 	}
 
 
