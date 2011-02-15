@@ -44,7 +44,7 @@ public class DBConnectionExtension extends
 		About about = (About) PluginServices.getExtension(About.class);
 		FPanelAbout panelAbout = about.getAboutPanel();
 		java.net.URL aboutURL = this.getClass().getResource("/about.htm");
-		panelAbout.addAboutUrl("OGE", aboutURL);
+		panelAbout.addAboutUrl("gvSIG EIEL", aboutURL);
 
 		// remove every reference from users and elle
 		ArrayList<ExtensionDecorator> decorators = new ArrayList<ExtensionDecorator>();
