@@ -25,6 +25,7 @@ import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
+import es.udc.cartolab.gvsig.users.gui.AbstractGVWindow;
 import es.udc.cartolab.gvsig.users.gui.DBConnectionDialog;
 
 public class DBConnectionExtension extends
@@ -32,8 +33,8 @@ public class DBConnectionExtension extends
 
 	public void execute(String actionCommand) {
 
-		//with header image (Pontevedra)
-		DBConnectionDialog dialog = new DBConnectionDialog(EIELValues.getHeader(), EIELValues.HEADER_COLOR);
+		// with header image (Pontevedra)
+		DBConnectionDialog dialog = new DBConnectionDialog();
 		dialog.openWindow();
 	}
 
@@ -78,6 +79,11 @@ public class DBConnectionExtension extends
 		for (ExtensionDecorator decorator : decorators) {
 			decorator.setVisibility(ExtensionDecorator.ALWAYS_INVISIBLE);
 		}
+
+		// initialize brand image in dbconnection windows
+		EIELValues v = EIELValues.getInstance();
+		AbstractGVWindow.setHeader(v.getHeader());
+		AbstractGVWindow.setHeaderColor(v.getHeaderColor());
 
 	}
 

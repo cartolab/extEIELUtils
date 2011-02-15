@@ -18,7 +18,6 @@
 package es.udc.cartolab.gvsig.eielutils;
 
 import es.udc.cartolab.gvsig.eielutils.constants.gui.EIELCreateUserWindow;
-import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.users.gui.CreateUserWindow;
 
 public class CreateUserExtension extends
@@ -26,7 +25,7 @@ public class CreateUserExtension extends
 
 	public void execute(String actionCommand) {
 
-		CreateUserWindow window = new EIELCreateUserWindow(EIELValues.getHeader(), EIELValues.HEADER_COLOR);
+		CreateUserWindow window = new EIELCreateUserWindow();
 		window.openWindow();
 	}
 

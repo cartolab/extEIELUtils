@@ -73,7 +73,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 	private final String nucleoTable = EIELValues.TABLE_NUCLEO;
 	private final String nucCodField = EIELValues.FIELD_COD_POB;
 	private final String denominacion = EIELValues.FIELD_DENOM;
-	private final String fase = EIELValues.FASE;
+	private final String fase = EIELValues.getInstance().getFase();
 
 	private static Logger logger = Logger
 			.getLogger(ConstantSelectionWindow.class);
@@ -139,8 +139,8 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 		// Set header if any
 		if (northPanel == null) {
 			northPanel = new JPanel();
-			ImageIcon logo = EIELValues.getHeader();
-			northPanel.setBackground(EIELValues.HEADER_COLOR);
+			ImageIcon logo = EIELValues.getInstance().getHeader();
+			northPanel.setBackground(EIELValues.getInstance().getHeaderColor());
 			JLabel icon = new JLabel();
 			icon.setIcon(logo);
 			northPanel.add(icon, BorderLayout.WEST);

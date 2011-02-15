@@ -47,8 +47,8 @@ public class Constants {
 	private String entCod;
 	private String nucCod;
 	private boolean constatsSelected = false;
-	private String fase = EIELValues.FASE;
-	private String provincia = EIELValues.PROVINCIA;
+	private String fase = EIELValues.getInstance().getFase();
+	private String provincia = EIELValues.getInstance().getProvincia();
 
 	private Constants() {
 	}

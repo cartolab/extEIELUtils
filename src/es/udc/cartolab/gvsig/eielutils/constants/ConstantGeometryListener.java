@@ -46,9 +46,12 @@ public class ConstantGeometryListener implements EndGeometryListener {
 				int pos = (int) recordSet.getRowCount() - 1;
 
 				int[] attPos = new int[3];
-				attPos[0] = recordSet.getFieldIndexByName(EIELValues.FIELD_FASE);
-				attPos[1] = recordSet.getFieldIndexByName(EIELValues.FIELD_COD_PRO);
-				attPos[2] = recordSet.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
+				attPos[0] = recordSet
+						.getFieldIndexByName(EIELValues.FIELD_FASE);
+				attPos[1] = recordSet
+						.getFieldIndexByName(EIELValues.FIELD_COD_PRO);
+				attPos[2] = recordSet
+						.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
 
 				boolean foundAll = true;
 				for (int aux : attPos) {
@@ -59,8 +62,9 @@ public class ConstantGeometryListener implements EndGeometryListener {
 
 				if (foundAll) {
 					String[] attStringValues = new String[3];
-					attStringValues[0] = EIELValues.FASE;
-					attStringValues[1] = EIELValues.PROVINCIA;
+					attStringValues[0] = EIELValues.getInstance().getFase();
+					attStringValues[1] = EIELValues.getInstance()
+							.getProvincia();
 					attStringValues[2] = ctes.getMunCod();
 
 					boolean lyrEditing = lyr.isEditing();
