@@ -42,16 +42,20 @@ public class ConstantSelectionExtension extends Extension {
 		}
 		PluginServices.getMDIManager().addCentredWindow(cswindow);
 
-
 	}
 
 	public void initialize() {
-		PluginServices.getMainFrame().addStatusBarControl(ConstantSelectionExtension.class, label);
+		PluginServices.getMainFrame().addStatusBarControl(
+				ConstantSelectionExtension.class, label);
 
-		PluginServices.getIconTheme().registerDefault(
-				"constants",
-				this.getClass().getClassLoader().getResource("images/ctes.png")
-			);
+		PluginServices.getIconTheme()
+				.registerDefault(
+						"constants",
+						this.getClass().getClassLoader()
+								.getResource("images/ctes.png"));
+
+		CADListenerManager.addEndGeometryListener(this.getClass().getName(),
+				new ConstantGeometryListener());
 
 		CADListenerManager.addEndGeometryListener(this.getClass().getName(), new ConstantGeometryListener());
 	}

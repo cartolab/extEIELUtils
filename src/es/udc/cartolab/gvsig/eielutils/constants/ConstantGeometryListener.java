@@ -43,7 +43,7 @@ public class ConstantGeometryListener implements EndGeometryListener {
 
 			try {
 				SelectableDataSource recordSet = lyr.getRecordset();
-				int pos = (int) recordSet.getRowCount() -1;
+				int pos = (int) recordSet.getRowCount() - 1;
 
 				int[] attPos = new int[3];
 				attPos[0] = recordSet.getFieldIndexByName(EIELValues.FIELD_FASE);

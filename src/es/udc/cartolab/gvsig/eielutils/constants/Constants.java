@@ -52,6 +52,7 @@ public class Constants {
 
 	private Constants() {
 	}
+
 	/**
 	 * @return user defined constants, or null if they're not defined yet.
 	 */
@@ -62,19 +63,19 @@ public class Constants {
 		return instance;
 	}
 
-	public static Constants newConstants(String munCod, String entCod, String nucCod,
-			List<String> municipios) {
+	public static Constants newConstants(String munCod, String entCod,
+			String nucCod, List<String> municipios) {
 		if (instance == null) {
 			instance = new Constants();
 		}
 		instance.munCod = munCod;
 		instance.entCod = entCod;
 		instance.nucCod = nucCod;
-		if (entCod==null) {
-			instance.entCod="";
+		if (entCod == null) {
+			instance.entCod = "";
 		}
-		if (nucCod==null) {
-			instance.nucCod="";
+		if (nucCod == null) {
+			instance.nucCod = "";
 		}
 		instance.municipios = municipios;
 		if (!municipios.contains(munCod)) {
@@ -85,7 +86,8 @@ public class Constants {
 		return instance;
 	}
 
-	public static Constants newConstants(String munCod, String entCod, String nucCod) {
+	public static Constants newConstants(String munCod, String entCod,
+			String nucCod) {
 		ArrayList<String> municipios = new ArrayList<String>();
 		municipios.add(munCod);
 		return newConstants(munCod, entCod, nucCod, municipios);
@@ -111,11 +113,11 @@ public class Constants {
 		MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
 		NewStatusBar footerStatusBar = mF.getStatusBar();
 		String nuc = nucCod;
-		if (nucCod==null || nucCod.equals("")) {
+		if (nucCod == null || nucCod.equals("")) {
 			nuc = "-";
 		}
 		String ent = entCod;
-		if (entCod==null || entCod.equals("")) {
+		if (entCod == null || entCod.equals("")) {
 			ent = "-";
 		}
 		String text = PluginServices.getText(this, "status_mun_ent_nuc");
@@ -128,7 +130,8 @@ public class Constants {
 			instance.constatsSelected = false;
 			MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
 			NewStatusBar footerStatusBar = mF.getStatusBar();
-			footerStatusBar.setMessage("constants", PluginServices.getText(null, "all_prov"));
+			footerStatusBar.setMessage("constants",
+					PluginServices.getText(null, "all_prov"));
 		}
 	}
 
@@ -138,6 +141,7 @@ public class Constants {
 
 	/**
 	 * It tells if the council it's the current one
+	 * 
 	 * @param cod
 	 * @return
 	 */
@@ -150,7 +154,10 @@ public class Constants {
 
 	/**
 	 * Gets current constant value.
-	 * @param constant should be one of fase, provincia, municipio or nucleo/poblamiento.
+	 * 
+	 * @param constant
+	 *            should be one of fase, provincia, municipio or
+	 *            nucleo/poblamiento.
 	 * @return the constant value, null if it's not set
 	 */
 	public String getValue(String constant) {
