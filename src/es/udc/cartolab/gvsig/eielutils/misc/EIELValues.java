@@ -105,7 +105,7 @@ public class EIELValues {
 	}
 
 	public ImageIcon getHeader() {
-		if (getHeaderFile().exists()) {
+		if (headerPath != null && getHeaderFile().exists()) {
 			return new ImageIcon(headerPath);
 		} else {
 			return null;
@@ -117,7 +117,7 @@ public class EIELValues {
 	}
 
 	public ImageIcon getHeaderNT() {
-		if (getHeaderFileNT().exists()) {
+		if (headerNTPath != null && getHeaderFileNT().exists()) {
 			return new ImageIcon(headerNTPath);
 		} else {
 			return null;
