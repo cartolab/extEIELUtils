@@ -125,7 +125,11 @@ public class EIELValues {
 	}
 
 	public File getHeaderFileNT() {
-		return new File(headerNTPath);
+		if (headerNTPath != null) {
+			return new File(headerNTPath);
+		} else {
+			return null;
+		}
 	}
 
 }
