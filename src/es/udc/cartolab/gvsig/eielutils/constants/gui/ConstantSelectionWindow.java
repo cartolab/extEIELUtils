@@ -131,6 +131,9 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 			}
 
 		}
+
+		setDefaultValues();
+
 		return centerPanel;
 	}
 
@@ -197,13 +200,17 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 		}
 	}
 
-	private String getCode(JComboBox cb) {
+	private String getCode(JComboBox cb, int index) {
 		String text = "";
-		if (cb.getSelectedItem() != null) {
-			text = cb.getSelectedItem().toString();
+		if (index > 0 && index < cb.getItemCount()) {
+			text = cb.getItemAt(index).toString();
 			text = text.substring(0, text.indexOf(" - "));
 		}
 		return text;
+	}
+
+	private String getCode(JComboBox cb) {
+		return getCode(cb, cb.getSelectedIndex());
 	}
 
 	private void init() {
@@ -280,6 +287,43 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 		} else {
 			Constants.newConstants(munCod, entCod, nucCod, municipios);
 		}
+	}
+
+	private void setDefaultValues() {
+
+		Constants ctes = Constants.getCurrentConstants();
+
+		if (ctes.constantsSelected()) {
+
+			String mun = ctes.getMunCod();
+			String ent = ctes.getEntCod();
+			String nuc = ctes.getNucCod();
+
+			setCombobox(municipioCB, mun);
+			setCombobox(entidadCB, ent);
+			setCombobox(nucleoCB, nuc);
+
+		}
+
+	}
+
+	private void setCombobox(JComboBox cb, String code) {
+
+		int index = 0;
+		if (code != null && !code.equals("")) {
+			for (int i = 0; i < cb.getItemCount(); i++) {
+				String auxCode = getCode(cb, i);
+				if (auxCode.equals(code)) {
+					index = i;
+					break;
+				}
+			}
+		}
+
+		if (index < cb.getItemCount()) {
+			cb.setSelectedIndex(index);
+		}
+
 	}
 
 	private void noConstants() {
