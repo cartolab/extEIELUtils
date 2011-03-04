@@ -382,6 +382,9 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 			entidadCB.removeActionListener(this);
 			entidadCB.removeAllItems();
 			entidadCB.addActionListener(this);
+			nucleoCB.removeActionListener(this);
+			nucleoCB.removeAllItems();
+			nucleoCB.addActionListener(this);
 			municipioCHB.setEnabled(false);
 		}
 	}
