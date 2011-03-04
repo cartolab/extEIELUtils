@@ -35,8 +35,8 @@ import es.udc.cartolab.gvsig.eielutils.constants.Constants;
 
 public class LayerOperations {
 
-	public static void zoomToNucleo (FLayer layer, String codMun, String codEnt, String codNuc) {
-
+	public static void zoomToNucleo(FLayer layer, String codMun, String codEnt,
+			String codNuc) {
 
 		if (layer instanceof AlphanumericData) {
 			int pos = -1;
@@ -45,23 +45,28 @@ public class LayerOperations {
 			try {
 				recordset = ((FLyrVect) layer).getRecordset();
 
-
-				int munIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
-				int entIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_ENT);
-				int nucIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_POB);
+				int munIdx = recordset
+						.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
+				int entIdx = recordset
+						.getFieldIndexByName(EIELValues.FIELD_COD_ENT);
+				int nucIdx = recordset
+						.getFieldIndexByName(EIELValues.FIELD_COD_POB);
 
 				if (munIdx > -1 && entIdx > -1 && nucIdx > -1) {
-					for (int i=0; i<recordset.getRowCount(); i++) {
+					for (int i = 0; i < recordset.getRowCount(); i++) {
 						Value val = recordset.getFieldValue(i, munIdx);
-						String cod = val.getStringValue(ValueWriter.internalValueWriter);
+						String cod = val
+								.getStringValue(ValueWriter.internalValueWriter);
 						cod = cod.replaceAll("'", "");
 						if (cod.equals(codMun)) {
 							val = recordset.getFieldValue(i, entIdx);
-							cod = val.getStringValue(ValueWriter.internalValueWriter);
+							cod = val
+									.getStringValue(ValueWriter.internalValueWriter);
 							cod = cod.replaceAll("'", "");
 							if (cod.equals(codEnt)) {
 								val = recordset.getFieldValue(i, nucIdx);
-								cod = val.getStringValue(ValueWriter.internalValueWriter);
+								cod = val
+										.getStringValue(ValueWriter.internalValueWriter);
 								cod = cod.replaceAll("'", "");
 								if (cod.equals(codNuc)) {
 									pos = i;
@@ -76,15 +81,13 @@ public class LayerOperations {
 				e1.printStackTrace();
 			}
 
-
 			if (pos > -1) {
 				zoom((FLyrVect) layer, pos);
 			}
 		}
 	}
 
-	public static void zoomToMunicipio (FLayer layer, String codMun) {
-
+	public static void zoomToMunicipio(FLayer layer, String codMun) {
 
 		if (layer instanceof AlphanumericData) {
 			int pos = -1;
@@ -93,13 +96,14 @@ public class LayerOperations {
 			try {
 				recordset = ((FLyrVect) layer).getRecordset();
 
-
-				int munIdx = recordset.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
+				int munIdx = recordset
+						.getFieldIndexByName(EIELValues.FIELD_COD_MUN);
 
 				if (munIdx > -1) {
-					for (int i=0; i<recordset.getRowCount(); i++) {
+					for (int i = 0; i < recordset.getRowCount(); i++) {
 						Value val = recordset.getFieldValue(i, munIdx);
-						String cod = val.getStringValue(ValueWriter.internalValueWriter);
+						String cod = val
+								.getStringValue(ValueWriter.internalValueWriter);
 						cod = cod.replaceAll("'", "");
 						if (cod.equals(codMun)) {
 							pos = i;
@@ -112,7 +116,6 @@ public class LayerOperations {
 				e1.printStackTrace();
 			}
 
-
 			if (pos > -1) {
 				zoom((FLyrVect) layer, pos);
 			}
@@ -123,7 +126,7 @@ public class LayerOperations {
 
 		Rectangle2D rectangle = null;
 		if (layer instanceof AlphanumericData) {
-			//TODO gvSIG comment: Esta comprobacion se hacia con Selectable
+			// TODO gvSIG comment: Esta comprobacion se hacia con Selectable
 			try {
 				IGeometry g;
 				ReadableVectorial source = layer.getSource();
@@ -131,19 +134,21 @@ public class LayerOperations {
 				g = source.getShape(pos);
 				source.stop();
 
-				/* fix to avoid zoom problems when layer and view
-				 * projections aren't the same. */
+				/*
+				 * fix to avoid zoom problems when layer and view projections
+				 * aren't the same.
+				 */
 				if (layer.getCoordTrans() != null) {
 					g.reProject(layer.getCoordTrans());
 				}
 
 				rectangle = g.getBounds2D();
 
-				if (rectangle.getWidth() < 200){
+				if (rectangle.getWidth() < 200) {
 					rectangle.setFrameFromCenter(rectangle.getCenterX(),
 							rectangle.getCenterY(),
-							rectangle.getCenterX()+100,
-							rectangle.getCenterY()+100);
+							rectangle.getCenterX() + 100,
+							rectangle.getCenterY() + 100);
 				}
 
 				if (rectangle != null) {
@@ -167,13 +172,22 @@ public class LayerOperations {
 				String codNuc = c.getNucCod();
 				String codMun = c.getMunCod();
 				String codEnt = c.getEntCod();
-				FLayer nucLayer = view.getMapControl().getMapContext().getLayers().getLayer(EIELValues.LAYER_NUCLEO);
+				FLayer nucLayer = view.getMapControl().getMapContext()
+						.getLayers().getLayer(EIELValues.LAYER_NUCLEO);
 				if (nucLayer != null && nucLayer instanceof FLyrVect) {
-					LayerOperations.zoomToNucleo(nucLayer, codMun, codEnt, codNuc);
+					LayerOperations.zoomToNucleo(nucLayer, codMun, codEnt,
+							codNuc);
+				} else {
+					FLayer munLayer = view.getMapControl().getMapContext()
+							.getLayers().getLayer(EIELValues.LAYER_MUNICIPIO);
+					if (munLayer != null && munLayer instanceof FLyrVect) {
+						LayerOperations.zoomToMunicipio(munLayer, codMun);
+					}
 				}
 			} else {
 				String codMun = c.getMunCod();
-				FLayer munLayer = view.getMapControl().getMapContext().getLayers().getLayer(EIELValues.LAYER_MUNICIPIO);
+				FLayer munLayer = view.getMapControl().getMapContext()
+						.getLayers().getLayer(EIELValues.LAYER_MUNICIPIO);
 				if (munLayer != null && munLayer instanceof FLyrVect) {
 					LayerOperations.zoomToMunicipio(munLayer, codMun);
 				}
