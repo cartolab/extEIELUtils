@@ -254,9 +254,10 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 		String munCod = getCode(municipioCB);
 		String entCod = "";
 		String nucCod = "";
-		if (entidadCB.getSelectedIndex() != 0
-				&& nucleoCB.getSelectedIndex() != 0) {
+		if (entidadCB.getSelectedIndex() != 0) {
 			entCod = getCode(entidadCB);
+		}
+		if (nucleoCB.getSelectedIndex() != 0) {
 			nucCod = getCode(nucleoCB);
 		}
 		// Close window
