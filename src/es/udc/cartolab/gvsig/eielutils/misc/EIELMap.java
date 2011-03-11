@@ -43,14 +43,21 @@ public class EIELMap extends ELLEMap{
 
 
 	public boolean reloadNeeded(List<String> munCodes) {
-		if (municipios!=null && munCodes!=null) {
-			for (String mun : munCodes) {
-				if (!municipios.contains(mun)) {
-					return true;
+		boolean reload = false;
+		if (municipios != null) {
+			if (munCodes != null) {
+				for (String mun : munCodes) {
+					if (!municipios.contains(mun)) {
+						reload = true;
+						break;
+					}
 				}
+			} else {
+				// there were constants, but now there aren't
+				reload = true;
 			}
 		}
-		return false;
+		return reload;
 	}
 
 	public MapDAO getMapDAO() {

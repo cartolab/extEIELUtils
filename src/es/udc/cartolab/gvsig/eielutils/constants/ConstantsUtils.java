@@ -25,9 +25,9 @@ import com.iver.utiles.XMLEntity;
 
 import es.udc.cartolab.gvsig.eielutils.misc.EIELMap;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELMapDAO;
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
-import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 
 public class ConstantsUtils {
 
@@ -63,7 +63,7 @@ public class ConstantsUtils {
 				}
 			}
 
-			for (ELLEMap map : MapDAO.getInstance().getLoadedMaps()) {
+			for (ELLEMap map : EIELMapDAO.getInstance().getLoadedMaps()) {
 				if (map instanceof EIELMap) {
 					EIELMap eielmap = (EIELMap) map;
 					if (eielmap.reloadNeeded(ctsMuns)) {
@@ -96,7 +96,7 @@ public class ConstantsUtils {
 
 	public static boolean reloadNeeded(View view, List<String> munCodes) {
 
-		for (ELLEMap map : MapDAO.getInstance().getLoadedMaps()) {
+		for (ELLEMap map : EIELMapDAO.getInstance().getLoadedMaps()) {
 			if (map instanceof EIELMap) {
 				EIELMap eielmap = (EIELMap) map;
 				if (eielmap.reloadNeeded(munCodes)) {
