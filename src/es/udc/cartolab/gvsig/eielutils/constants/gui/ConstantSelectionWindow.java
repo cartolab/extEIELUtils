@@ -329,7 +329,7 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 
 	private void noConstants() {
 		PluginServices.getMDIManager().closeWindow(this);
-		if (Constants.getCurrentConstants().constantsSelected()) {
+		if (ConstantsUtils.reloadNeeded(view, null)) {
 			int answer = JOptionPane.showConfirmDialog(this,
 					PluginServices.getText(this, "maps_will_be_reloaded"), "",
 					JOptionPane.YES_NO_OPTION);
