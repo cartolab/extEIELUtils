@@ -265,28 +265,34 @@ public class ConstantSelectionWindow extends JPanel implements IWindow,
 
 		List<String> municipios = getMunicipiosToLoad(munCod, entCod, nucCod);
 
-		if (ConstantsUtils.reloadNeeded(view, municipios)) {
-			int answer = JOptionPane.showConfirmDialog(this,
-					PluginServices.getText(this, "maps_will_be_reloaded"), "",
-					JOptionPane.YES_NO_OPTION);
-			if (answer == 0) {
-				Constants.newConstants(munCod, entCod, nucCod, municipios);
-				// call function that checks councils and reload view if
-				// necessary
-				try {
-					ConstantsUtils.reloadView(view);
-				} catch (Exception e) {
-					String msg = e.getMessage();
-					JOptionPane.showMessageDialog(this,
-							String.format(PluginServices.getText(this,
-									"error_loading_layers"), msg), "",
-							JOptionPane.ERROR_MESSAGE, null);
-					logger.error(msg, e);
+		/*
+		 * If municipios == null, then user has canceled at Select Adjacents
+		 * Window...
+		 */
+		if (municipios != null) {
+			if (ConstantsUtils.reloadNeeded(view, municipios)) {
+				int answer = JOptionPane.showConfirmDialog(this,
+						PluginServices.getText(this, "maps_will_be_reloaded"),
+						"", JOptionPane.YES_NO_OPTION);
+				if (answer == 0) {
+					Constants.newConstants(munCod, entCod, nucCod, municipios);
+					// call function that checks councils and reload view if
+					// necessary
+					try {
+						ConstantsUtils.reloadView(view);
+					} catch (Exception e) {
+						String msg = e.getMessage();
+						JOptionPane.showMessageDialog(this, String.format(
+								PluginServices.getText(this,
+										"error_loading_layers"), msg), "",
+								JOptionPane.ERROR_MESSAGE, null);
+						logger.error(msg, e);
+					}
+					LayerOperations.zoomToConstant(view);
 				}
-				LayerOperations.zoomToConstant(view);
+			} else {
+				Constants.newConstants(munCod, entCod, nucCod, municipios);
 			}
-		} else {
-			Constants.newConstants(munCod, entCod, nucCod, municipios);
 		}
 	}
 
