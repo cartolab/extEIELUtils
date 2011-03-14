@@ -28,7 +28,6 @@ import org.gvsig.gui.beans.controls.IControl;
 
 import com.iver.andami.PluginServices;
 
-
 public class ConstantLabel extends JLabel implements IControl {
 
 	private ArrayList<ActionListener> actionCommandListeners = new ArrayList<ActionListener>();

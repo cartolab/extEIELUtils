@@ -24,7 +24,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 import es.udc.cartolab.gvsig.elle.utils.MapDAO;
 
-public class EIELMap extends ELLEMap{
+public class EIELMap extends ELLEMap {
 
 	public EIELMap(String name, BaseView view) {
 		super(name, view);
@@ -36,11 +36,9 @@ public class EIELMap extends ELLEMap{
 		return municipios;
 	}
 
-
 	public void setMunicipios(List<String> municipios) {
 		this.municipios = municipios;
 	}
-
 
 	public boolean reloadNeeded(List<String> munCodes) {
 		boolean reload = false;

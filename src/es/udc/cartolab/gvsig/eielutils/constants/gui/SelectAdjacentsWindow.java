@@ -50,7 +50,8 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
-public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionListener {
+public class SelectAdjacentsWindow extends JPanel implements IWindow,
+		ActionListener {
 
 	private class CheckBoxItem {
 
@@ -84,13 +85,13 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 	private JButton cleanCouncilsButton;
 	private View view;
 
-	private static Logger logger = Logger.getLogger(SelectAdjacentsWindow.class);
-
-
+	private static Logger logger = Logger
+			.getLogger(SelectAdjacentsWindow.class);
 
 	public WindowInfo getWindowInfo() {
 		if (viewInfo == null) {
-			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG | WindowInfo.PALETTE);
+			viewInfo = new WindowInfo(WindowInfo.MODALDIALOG
+					| WindowInfo.PALETTE);
 			viewInfo.setTitle(PluginServices.getText(this, "select_adjacents"));
 			viewInfo.setWidth(800);
 			viewInfo.setHeight(400);
@@ -98,7 +99,8 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		return viewInfo;
 	}
 
-	public SelectAdjacentsWindow(View view, String munCod, String entCod, String nucCod) {
+	public SelectAdjacentsWindow(View view, String munCod, String entCod,
+			String nucCod) {
 		municipio = munCod;
 		entidad = entCod;
 		nucleo = nucCod;
@@ -125,28 +127,29 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 		setLayout(layout);
 
 		add(getNorthPanel(), new GridBagConstraints(0, 0, 1, 1, 0, 0,
-				GridBagConstraints.NORTH, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+				GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(
+						0, 0, 0, 0), 0, 0));
 
 		add(getCenterPanel(), new GridBagConstraints(0, 1, 1, 1, 0, 1,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(10, 10, 0, 0), 0, 0));
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(
+						10, 10, 0, 0), 0, 0));
 
 		add(getSouthPanel(), new GridBagConstraints(0, 2, 1, 1, 10, 0,
-				GridBagConstraints.SOUTH, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+				GridBagConstraints.SOUTH, GridBagConstraints.BOTH, new Insets(
+						0, 0, 0, 0), 0, 0));
 
-		//enables tabbing navigation
+		// enables tabbing navigation
 		setFocusCycleRoot(true);
 	}
 
 	protected JPanel getNorthPanel() {
 
-		//Set header if any
-		//Current header (Pontevedra) size: 425x79
+		// Set header if any
+		// Current header (Pontevedra) size: 425x79
 		if (northPanel == null) {
 			northPanel = new JPanel();
-			File iconPath = new File("gvSIG/extensiones/es.udc.cartolab.gvsig.elle/images/header.png");
+			File iconPath = new File(
+					"gvSIG/extensiones/es.udc.cartolab.gvsig.elle/images/header.png");
 			if (iconPath.exists()) {
 				FlowLayout layout = new FlowLayout();
 				layout.setAlignment(FlowLayout.LEFT);
@@ -168,16 +171,17 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			MigLayout layout = new MigLayout("", "[][grow][]", "[]");
 			southPanel.setLayout(layout);
 
-			//left
+			// left
 			JPanel left = new JPanel();
 			allCouncilsButton = new JButton(PluginServices.getText(this, "all"));
-			cleanCouncilsButton = new JButton(PluginServices.getText(this, "clean"));
+			cleanCouncilsButton = new JButton(PluginServices.getText(this,
+					"clean"));
 			allCouncilsButton.addActionListener(this);
 			cleanCouncilsButton.addActionListener(this);
 			left.add(allCouncilsButton);
 			left.add(cleanCouncilsButton);
 
-			//right
+			// right
 			JPanel right = new JPanel();
 			okButton = new JButton(PluginServices.getText(this, "ok"));
 			cancelButton = new JButton(PluginServices.getText(this, "cancel"));
@@ -186,13 +190,11 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			right.add(okButton);
 			right.add(cancelButton);
 
-
-
 			southPanel.add(left, "shrink, align left");
 			southPanel.add(new JPanel());
-			//			southPanel.add(cleanCouncilsButton, "shrink, align left");
+			// southPanel.add(cleanCouncilsButton, "shrink, align left");
 			southPanel.add(right, "shrink, align right");
-			//			southPanel.add(cancelButton, "shrink, align right");
+			// southPanel.add(cancelButton, "shrink, align right");
 		}
 		return southPanel;
 	}
@@ -205,12 +207,16 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 			String munField = EIELValues.FIELD_COD_MUN;
 			String denomField = EIELValues.FIELD_DENOM;
 			if (dbs != null) {
-				GridLayout layout = new GridLayout(13,5);
+				GridLayout layout = new GridLayout(13, 5);
 				centerPanel.setLayout(layout);
 				ArrayList<String> adjacents = new ArrayList<String>();
-				String query = "SELECT " + munField + " FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE " + munField + "='" +
-				municipio + "')) ORDER BY " + denomField;
-				String table = dbs.getSchema() + "." + EIELValues.TABLE_MUNICIPIO;
+				String query = "SELECT "
+						+ munField
+						+ " FROM %s WHERE ST_Touches(the_geom, (SELECT the_geom FROM %s WHERE "
+						+ munField + "='" + municipio + "')) ORDER BY "
+						+ denomField;
+				String table = dbs.getSchema() + "."
+						+ EIELValues.TABLE_MUNICIPIO;
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
 
@@ -227,7 +233,8 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				query = "SELECT " + munField + ", " + denomField + " FROM %s ORDER BY " + munField;
+				query = "SELECT " + munField + ", " + denomField
+						+ " FROM %s ORDER BY " + munField;
 				query = String.format(query, table);
 				try {
 					Statement stat = dbs.getJavaConnection().createStatement();
@@ -259,8 +266,6 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 					e.printStackTrace();
 				}
 
-
-
 			}
 		}
 		return centerPanel;
@@ -268,7 +273,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow, ActionList
 
 	private void parseCB() {
 		municipios = new ArrayList<String>();
-		for (int i=0; i<checkBoxes.size(); i++) {
+		for (int i = 0; i < checkBoxes.size(); i++) {
 			if (checkBoxes.get(i).getCheckBox().isSelected()) {
 				municipios.add(checkBoxes.get(i).getMun());
 			}

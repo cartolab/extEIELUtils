@@ -51,8 +51,8 @@ public class EIELMapDAO extends MapDAO {
 		return instance;
 	}
 
-	public ELLEMap getMap(View view, String mapName,
-			String whereClause, int stylesSource, String stylesName) throws Exception {
+	public ELLEMap getMap(View view, String mapName, String whereClause,
+			int stylesSource, String stylesName) throws Exception {
 
 		if (whereClause == null) {
 			whereClause = "";
@@ -66,7 +66,7 @@ public class EIELMapDAO extends MapDAO {
 			map.addLayer(lp);
 		}
 
-			/////////////// MapOverview
+		// ///////////// MapOverview
 		List<LayerProperties> overviewLayers = getOverviewLayers(mapName);
 		for (LayerProperties lp : overviewLayers) {
 			map.addOverviewLayer(lp);
@@ -80,18 +80,20 @@ public class EIELMapDAO extends MapDAO {
 	}
 
 	protected FLayer getLayer(String layerName, String tableName,
-			String schema, String whereClause, IProjection proj,
-			boolean visible) throws SQLException, DBException {
+			String schema, String whereClause, IProjection proj, boolean visible)
+			throws SQLException, DBException {
 		DBSession dbs = DBSession.getCurrentSession();
 		FLayer layer = null;
 
 		if (dbs != null) {
 
 			if (whereClause.equals("") || hasMunicipio(tableName, schema)) {
-				if (schema!=null) {
-					layer = dbs.getLayer(layerName, tableName, schema, whereClause, proj);
+				if (schema != null) {
+					layer = dbs.getLayer(layerName, tableName, schema,
+							whereClause, proj);
 				} else {
-					layer = dbs.getLayer(layerName, tableName, whereClause, proj);
+					layer = dbs.getLayer(layerName, tableName, whereClause,
+							proj);
 				}
 				layer.setVisible(visible);
 			}
@@ -99,13 +101,13 @@ public class EIELMapDAO extends MapDAO {
 		return layer;
 	}
 
-
-	private boolean hasMunicipio(String table, String schema) throws SQLException {
+	private boolean hasMunicipio(String table, String schema)
+			throws SQLException {
 
 		DBSession dbs = DBSession.getCurrentSession();
 		if (dbs != null) {
 			String[] columns;
-			if (schema!=null) {
+			if (schema != null) {
 				columns = dbs.getColumns(table);
 			} else {
 				columns = dbs.getColumns(schema, table);
@@ -121,6 +123,5 @@ public class EIELMapDAO extends MapDAO {
 		return false;
 
 	}
-
 
 }

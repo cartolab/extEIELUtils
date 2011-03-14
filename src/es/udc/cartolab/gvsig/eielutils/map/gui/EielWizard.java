@@ -52,16 +52,16 @@ public class EielWizard extends ElleWizard {
 			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
 				List<String> councils = constants.getMunicipios();
-				for (int j=0; j<councils.size()-1; j++) {
-					whereClause = whereClause.concat(munField + "='" + councils.get(j) +
-					"' OR ");
+				for (int j = 0; j < councils.size() - 1; j++) {
+					whereClause = whereClause.concat(munField + "='"
+							+ councils.get(j) + "' OR ");
 				}
-				whereClause = whereClause.concat(munField + "='" + councils.get(councils.size()-1) + "'");
+				whereClause = whereClause.concat(munField + "='"
+						+ councils.get(councils.size() - 1) + "'");
 
 			}
 		}
 		return whereClause;
 	}
-
 
 }

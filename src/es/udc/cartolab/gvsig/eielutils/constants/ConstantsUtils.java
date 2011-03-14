@@ -24,22 +24,27 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.XMLEntity;
 
 import es.udc.cartolab.gvsig.eielutils.misc.EIELMap;
-import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELMapDAO;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.elle.gui.EllePreferencesPage;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
 
 public class ConstantsUtils {
 
 	/**
-	 * Reloads maps on the view if the area of the current loaded ones doesn't contain
-	 * the new ones.
-	 *
-	 * It doesn't remove non-related layers from the view, but the order can change.
-	 * This should be used <strong>after</strong> calling <i>createNewConstants</i>.
-	 * @param view the view to reload
-	 * @param loadedCouncils the previously loaded council, it is obtained by constant.getMunicipios(),
-	 * <strong>before calling createNewContants</strong>.
+	 * Reloads maps on the view if the area of the current loaded ones doesn't
+	 * contain the new ones.
+	 * 
+	 * It doesn't remove non-related layers from the view, but the order can
+	 * change. This should be used <strong>after</strong> calling
+	 * <i>createNewConstants</i>.
+	 * 
+	 * @param view
+	 *            the view to reload
+	 * @param loadedCouncils
+	 *            the previously loaded council, it is obtained by
+	 *            constant.getMunicipios(), <strong>before calling
+	 *            createNewContants</strong>.
 	 */
 	public static boolean reloadView(View view) throws Exception {
 
@@ -47,7 +52,7 @@ public class ConstantsUtils {
 		if (view != null) {
 			Constants constants = Constants.getCurrentConstants();
 
-			//where clause for the new load
+			// where clause for the new load
 			String whereClause = "";
 			List<String> ctsMuns = null;
 			if (constants.constantsSelected()) {
@@ -55,11 +60,12 @@ public class ConstantsUtils {
 				String munField = EIELValues.FIELD_COD_MUN;
 				if (constants.constantsSelected()) {
 					whereClause = "WHERE ";
-					for (int j=0; j<ctsMuns.size()-1; j++) {
-						whereClause = whereClause.concat(munField + "='" + ctsMuns.get(j) +
-						"' OR ");
+					for (int j = 0; j < ctsMuns.size() - 1; j++) {
+						whereClause = whereClause.concat(munField + "='"
+								+ ctsMuns.get(j) + "' OR ");
 					}
-					whereClause = whereClause.concat(munField + "='" + ctsMuns.get(ctsMuns.size()-1) + "'");
+					whereClause = whereClause.concat(munField + "='"
+							+ ctsMuns.get(ctsMuns.size() - 1) + "'");
 				}
 			}
 
@@ -75,24 +81,25 @@ public class ConstantsUtils {
 				}
 			}
 
-//			for (MapView map : maps) {
-//				if (map.reloadNeeded(ctsMuns)) {
-//					//remove map
-//					LoadEIELMap.getInstance().removeMap(view, map.getMap());
-//					constants.removeMap(map.getMap(), view);
-//
-//					//load the map again
-//					LoadEIELMap.getInstance().getMap(view, map.getMap(), whereClause, map.getLegendType(), map.getLegend());
-//					constants.addMap(map.getMap(), view, ctsMuns, map.getLegendType(), map.getLegend());
-//
-//					reloaded = true;
-//				}
-//			}
+			// for (MapView map : maps) {
+			// if (map.reloadNeeded(ctsMuns)) {
+			// //remove map
+			// LoadEIELMap.getInstance().removeMap(view, map.getMap());
+			// constants.removeMap(map.getMap(), view);
+			//
+			// //load the map again
+			// LoadEIELMap.getInstance().getMap(view, map.getMap(), whereClause,
+			// map.getLegendType(), map.getLegend());
+			// constants.addMap(map.getMap(), view, ctsMuns,
+			// map.getLegendType(), map.getLegend());
+			//
+			// reloaded = true;
+			// }
+			// }
 		}
 
 		return reloaded;
 	}
-
 
 	public static boolean reloadNeeded(View view, List<String> munCodes) {
 
@@ -109,9 +116,11 @@ public class ConstantsUtils {
 
 	private static String getLegendDir() {
 
-		XMLEntity xml = PluginServices.getPluginServices("es.udc.cartolab.gvsig.elle").getPersistentXML();
+		XMLEntity xml = PluginServices.getPluginServices(
+				"es.udc.cartolab.gvsig.elle").getPersistentXML();
 		if (xml.contains(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME)) {
-			return xml.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
+			return xml
+					.getStringProperty(EllePreferencesPage.DEFAULT_LEGEND_DIR_KEY_NAME);
 		}
 
 		return null;

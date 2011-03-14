@@ -24,9 +24,9 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 
 import es.udc.cartolab.gvsig.eielutils.constants.Constants;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELMap;
+import es.udc.cartolab.gvsig.eielutils.misc.EIELMapDAO;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.eielutils.misc.LayerOperations;
-import es.udc.cartolab.gvsig.eielutils.misc.EIELMapDAO;
 import es.udc.cartolab.gvsig.elle.gui.wizard.WizardException;
 import es.udc.cartolab.gvsig.elle.gui.wizard.load.LoadMapWizardComponent;
 import es.udc.cartolab.gvsig.elle.utils.ELLEMap;
@@ -40,7 +40,7 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 
 	public void finish() throws WizardException {
 		Object aux = properties.get(PROPERTY_VEW);
-		if (aux!=null && aux instanceof View) {
+		if (aux != null && aux instanceof View) {
 			View view = (View) aux;
 			Constants constants = Constants.getCurrentConstants();
 			String whereClause = "";
@@ -49,14 +49,17 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 			if (constants.constantsSelected()) {
 				whereClause = "WHERE ";
 				municipios = constants.getMunicipios();
-				for (String municipio :  municipios) {
-					whereClause = whereClause.concat(munField + "= '" + municipio + "' OR ");
+				for (String municipio : municipios) {
+					whereClause = whereClause.concat(munField + "= '"
+							+ municipio + "' OR ");
 				}
-				whereClause = whereClause.substring(0, whereClause.length()-3);
+				whereClause = whereClause
+						.substring(0, whereClause.length() - 3);
 				System.out.println(whereClause);
 			}
 			try {
-				ELLEMap map = EIELMapDAO.getInstance().getMap(view, mapList.getSelectedValue().toString(), whereClause);
+				ELLEMap map = EIELMapDAO.getInstance().getMap(view,
+						mapList.getSelectedValue().toString(), whereClause);
 				if (map instanceof EIELMap) {
 					EIELMap auxmap = (EIELMap) map;
 					auxmap.setMunicipios(municipios);

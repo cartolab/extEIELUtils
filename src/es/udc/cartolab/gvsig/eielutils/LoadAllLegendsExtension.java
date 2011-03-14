@@ -17,9 +17,8 @@
 
 package es.udc.cartolab.gvsig.eielutils;
 
-
-
-public class LoadAllLegendsExtension extends es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension {
+public class LoadAllLegendsExtension extends
+		es.udc.cartolab.gvsig.elle.LoadAllLegendsExtension {
 
 	protected void registerIcons() {
 
