@@ -1,0 +1,11 @@
+* 22/03/2011 Released version 1.0 RC1
+ - OpenCADTools allows exoport in just one step all the actives layer in the TOC
+ - Solved some issues related to constant selection, zoom to constant, and the reload
+   geometries defined by the constants
+ - Improved the information provided by the validation tool when there is an error
+   on the validations
+ - Fixed small issues related to the persistance of the prefereces between sessions and
+   the location of the preferences files
+ - Solved some troubles with the size of the forms and the scroll bars
+
+* 24/02/2011 gvSIG-EIEL 1.0 Beta Released
