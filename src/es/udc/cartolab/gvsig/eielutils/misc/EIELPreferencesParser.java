@@ -35,10 +35,6 @@ public class EIELPreferencesParser {
 	private final static String preferencesFile = Launcher.getAppHomeDir()
 			+ File.separator + "eiel.xml";
 
-	/* default values */
-	private final static String FASE_DEFAULT = "2010";
-	private final static String PROVINCIA_DEFAULT = "36";
-
 	private static File getFile() {
 		File f = new File(preferencesFile);
 		if (f.exists()) {
@@ -61,9 +57,6 @@ public class EIELPreferencesParser {
 
 	public static void getEIELValues() {
 		EIELValues ev = EIELValues.getInstance();
-		// this will be overwritten if there isn't any exception
-		ev.setFase(FASE_DEFAULT);
-		ev.setProvincia(PROVINCIA_DEFAULT);
 		try {
 			File f = getFile();
 			if (f != null) {
