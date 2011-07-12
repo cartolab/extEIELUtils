@@ -313,7 +313,7 @@ public class SelectAdjacentsWindow extends JPanel implements IWindow,
 	}
 
 	public Object getWindowProfile() {
-		return null;
+		return WindowInfo.DIALOG_PROFILE;
 	}
 
 }
