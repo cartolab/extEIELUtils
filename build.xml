@@ -2,7 +2,10 @@
     <description>
     	EIEL Utils
     </description>
-  <!-- set global properties for this build -->
+	
+	<import file="../binaries/ant/utilities.xml"/>
+
+	<!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="build" location="bin"/>
   <property name="dist"  location="dist"/>
@@ -11,6 +14,19 @@
   <property name="andami" location="../_fwAndami" />
 	<property name="extensionsDir" location="../_fwAndami/gvSIG/extensiones"/>
 	<property name="lib-dir" location="${extensionsDir}/${mainplugin}/lib"/>
+	
+	
+	<!-- gvSIG-EIEL extensions -->
+	<property name="gvSIG-EIEL_projects" value="
+			ELLE,
+			extDBConnection,
+			exteielforms,
+			extEIELUtils,
+			extNavTable,
+			extNTOpenCADPlugin,
+			extTOCExtra,
+			extvalidation
+	"/>
 
   <target name="init">
     <!-- Create the time stamp -->
@@ -94,5 +110,26 @@
 		<delete dir="${dist}"/>
 		<delete dir="${build}"/>
 	</target>
+	
+	<target name="build-eiel-projects"
+		description="calls the default target for the gvSIG-EIEL projects">
+		<foreach list="${gvSIG-EIEL_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
+	</target>
+	
+	<target name="default-ant-target">
+			<property name="da-target.dir" location="../${da-target.name}"/>
+			<if>
+				<available file="${da-target.dir}" type="dir"/>
+				<then>
+					<ant dir="${da-target.dir}" inheritAll="false" />
+				</then>
+				<else>
+					<echo>
+						Skip ${da-target.name} project from Batch build
+					</echo>
+				</else>
+			</if>
+	</target>
+	
 </project>
 
