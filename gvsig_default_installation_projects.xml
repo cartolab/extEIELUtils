@@ -1,0 +1,102 @@
+<project name="gvsig_default_installation_projects">
+
+
+	<!-- gvSIG-EIEL extensions -->
+	<property name="gvSIG-EIEL_projects" value="
+			extNavTable,
+			extNTOpenCADPlugin,
+			extDockingSkin,
+			extMapSheets,
+			extTOCExtra,
+			extDBConnection,
+			ELLE,
+			extEIELUtils,
+			exteielforms,
+			extvalidation,	
+			gvsig_1_x_binding,
+			eiel
+	"/>
+
+	<!--  gvSIG default installation projects -->
+	<!--  https://gvsig.org/web/projects/gvsig-desktop/devel/gvsig/gvsig-desktop/devel/gvsig/1-11-0/projects -->	
+	<property name="gvSIG_projects" value="
+			libExceptions,
+			libInternationalization,
+			libIverUtiles,
+			libUIComponent,
+			_fwAndami,
+			libGeoUtils,
+			libCorePlugin,
+			libProjection,
+			libRaster,
+			libDXF,
+			libDriverManager,
+			libRemoteServices,
+			libGDBMS,
+			libFMap,
+			libGPE,
+			libGPE-XML,
+			libGPE-GML,
+			libGPE-KML,
+			appgvSIG,
+			libJCRS,
+			extJCRS,
+			libTopology,
+			libDwg,
+			extDwg,
+			extSymbology,
+			extRasterTools-SE,
+			extAddEventTheme,
+			extJDBC,
+			extCAD,
+			extGPE-gvSIG,
+			appCatalogAndGazetteerClient,
+			extCatalogAndGazetteer,
+			extDataLocator,
+			extGeoProcessing,
+			extGeoprocessingExtensions,
+			extGeoreferencing,
+			extSDE,
+			extScripting,
+			extAnnotations,
+			extExpressionField,
+			extWCS,
+			extWFS2,
+			extWMS,
+			extCenterViewToPoint,
+			extHelp,
+			extIconThemeBase,
+			extTableSummarize,
+			extSelectionTools,
+			extProjectBackup,
+			extQuickInfo,
+			extDerivedGeometries,
+			extHyperlink,
+			extI18n,
+			extQuickPrint,
+			extLayerLoadingOrder,
+			extTableImport,
+			extTableExport,
+			binaries
+		"/>
+	
+	<!--
+			Y ademas de estos proyectos, se incluyen en la distribucion los binarios de los proyectos:
+			ChartLegend build 9
+			NavTable 0.8
+			ConsecutiveNumberExtension build 2
+			CopyPasteGeom build 2
+			NewGeoprocess build 4
+			SelectDuplicatesExtension build 2
+			org.gvsig.installer.app.extension,
+			extOracleSpatial,
+			extSextanteGvsigBindings,
+			libArcIMS,
+			extArcims,
+		-->
+		
+		<property name="mandatoryProjets" value="${gvSIG_projects},
+			${gvSIG-EIEL_projects}
+		"/>
+		
+</project>

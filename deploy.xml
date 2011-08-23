@@ -1,0 +1,125 @@
+<project name="Deploy gvSIG-EIEL" default="build-eiel-projects" basedir="../appgvSIG">
+    <description>
+    	Ant file to deploy gvSIG-EIEL
+    </description>
+
+	<!-- overides gvSIG_projects, mandatoryProjets-->
+	<import file="../extEIELUtils/gvsig_default_installation_projects.xml"/>
+	<!-- be aware to not overwrite the appgvSIG targets -->
+	<import file="../appgvSIG/build.xml"/>
+
+	<!-- set global properties for this build -->
+	<property name="gvsig-eiel-base-win" value="gvSIG-EIEL-base-win" />
+	<property name="gvsig-eiel-base-lin" value="gvSIG-EIEL-base-lin" />
+	<property name="gvsig-eiel-base-win-path" value="${user.home}/${gvsig-eiel-base-win}.zip" />
+	<property name="gvsig-eiel-base-lin-path" value="${user.home}/${gvsig-eiel-base-lin}.tgz" />
+
+	<property name="eielNameWIN" value="gvSIG-EIEL-1.0_RC3_win32" />
+	<property name="eielNameLIN" value="gvSIG-EIEL-1.0_RC3_lin32" />
+
+
+	<!--
+			=======================
+			Build all eiel projects
+			=======================
+	-->
+
+	<target name="build-eiel-projects"
+		description="calls the default target for the gvSIG-EIEL projects">
+		<foreach list="${gvSIG-EIEL_projects}" trim="true" delimiter="," target="default-ant-target" param="da-target.name"/>
+	</target>
+
+	<target name="default-ant-target">
+			<property name="da-target.dir" location="../${da-target.name}"/>
+			<if>
+				<available file="${da-target.dir}" type="dir"/>
+				<then>
+					<ant dir="${da-target.dir}" inheritAll="false" />
+				</then>
+				<else>
+					<echo>
+						Skip ${da-target.name} project from Batch build
+					</echo>
+				</else>
+			</if>
+	</target>
+
+
+
+	<!--
+			=================
+			Deploy gvSIG-EIEL
+			=================
+	-->
+
+
+	<target name="deployTrunk"
+		description="Build gvSIG and eiel extensions from trunk. Unzip portable clean portable version (with propper corporate
+			images, without extensions, ...) and copy all the stuff to it ">
+
+		<!-- Clean all. Delete  _fwAndami/gvSIG and bin folder of all projects -->
+		<!--
+			TODO: ¿Delete ${dist}?. {Delete _fwAndami/lib and the remaining stuff in root _fwAndami?
+			¿Delete native libraries?
+		-->
+			<antcall target="clean-all" inheritAll="false">
+				<param name="gvSIG_projects" value="${gvSIG_projects}" />
+				<param name="mandatoryProjets" value="${mandatoryProjets}" />
+			</antcall>
+
+		<!-- Build and move to _fwAndami all projects -->
+		<!-- TODO:
+			This target compile for 1.5. Maybe we should use 1.6
+			Maybe "make-binary-distribution" should be used. That target makes: clean-all, build-number, build-all
+			We should thing about debug=on and debug-level
+		-->
+			<antcall target="build-all" inheritAll="false">
+				<param name="gvSIG_projects" value="${gvSIG_projects}" />
+				<param name="mandatoryProjets" value="${mandatoryProjets}" />
+			</antcall>
+
+		<!-- Build and move to _fwAndami eiel projects -->
+		<!-- TODO: With the hacked property gvSIG-projects, if eiel-projects had the batch-build target, we
+			don't need to use this task -->
+		<antcall target="build-eiel-projects" />
+
+
+		<!-- Is not really the portable version. gvSIG and lib folders, and andami.jar has bee removed -->
+		<unzip src="${gvsig-eiel-base-win-path}" dest="/tmp"> </unzip>
+		
+		<!--  ant tar task does not preserve permissions -->
+		<copy todir="/tmp" file="${gvsig-eiel-base-lin-path}" />
+		<exec executable="tar" output="/dev/null" os="Linux" dir="/tmp">
+        	<arg value="-xz"/>
+        	<arg value="--preserve-permissions"/>
+        	<arg value="--preserve-order"/>     
+        	<arg value="--file=${gvsig-eiel-base-lin}.tgz"/>
+    	</exec>
+
+		<move file="/tmp/${gvsig-eiel-base-win}" tofile="/tmp/${eielNameWIN}"/>
+		<move file="/tmp/${gvsig-eiel-base-lin}" tofile="/tmp/${eielNameLIN}"/>
+
+		<!-- Move to the portable version the extensions and the libs -->
+		<copy todir="/tmp/${eielNameWIN}/bin/" file="${andami}/andami.jar" />
+		<copydir dest="/tmp/${eielNameWIN}/bin/lib" src="${andami}/lib"></copydir>
+		<copydir dest="/tmp/${eielNameWIN}/bin/gvSIG" src="${andami}/gvSIG"></copydir>
+		
+		<!-- Move to the portable version the extensions and the libs -->
+		<copy todir="/tmp/${eielNameLIN}/bin/" file="${andami}/andami.jar" />
+		<copydir dest="/tmp/${eielNameLIN}/bin/lib" src="${andami}/lib"></copydir>
+		<copydir dest="/tmp/${eielNameLIN}/bin/gvSIG" src="${andami}/gvSIG"></copydir>
+
+		<echo>Remove the not needed theme folder</echo>
+
+	</target>
+
+<target name="test">
+    	
+		<exec executable="tar" output="/dev/null" os="Linux" dir="/tmp">
+        	<arg value="-xz"/>
+        	<arg value="--preserve-permissions"/>
+        	<arg value="--preserve-order"/>     
+        	<arg value="--file=${gvsig-eiel-base-lin}.tgz"/>
+    	</exec>
+</target>
+</project>
