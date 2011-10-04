@@ -10,7 +10,7 @@
 	<resourceBundle name="text"/>
 	<extensions>
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.DBConnectionExtension" description="Connect DB" active="true">
-			<tool-bar name="DBConnection">
+			<tool-bar name="dbconnection">
 				<action-tool icon="DBConnect" tooltip="connectToEIEL"
 					action-command="DBConnect" position="1"/>
 			</tool-bar>
@@ -25,7 +25,7 @@
 				action-command="SelectConstants"
 				position="0200"/>
 			<tool-bar name="EIEL">
-				<action-tool icon="constants" tooltip="SelectConstants"
+				<action-tool icon="constants" tooltip="select_constants"
 					action-command="SelectConstants" position="01"/>
 			</tool-bar> 
 		</extension>
@@ -90,7 +90,7 @@
 				position="0800"/> 
 		</extension>
 		<extension class-name="es.udc.cartolab.gvsig.eielutils.CloseSessionExtension" description="Change password" active="true">
-			<tool-bar name="DBConnection">
+			<tool-bar name="dbconnection">
 				<action-tool icon="DBClose" tooltip="close_session"
 					action-command="CLOSE" position="2"/>
 			</tool-bar>
