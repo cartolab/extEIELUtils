@@ -24,6 +24,7 @@ import com.iver.andami.plugins.ExtensionDecorator;
 import com.iver.cit.gvsig.About;
 import com.iver.cit.gvsig.gui.panels.FPanelAbout;
 
+import es.udc.cartolab.gvsig.eielutils.misc.EIELPreferencesParser;
 import es.udc.cartolab.gvsig.eielutils.misc.EIELValues;
 import es.udc.cartolab.gvsig.users.gui.AbstractGVWindow;
 import es.udc.cartolab.gvsig.users.gui.DBConnectionDialog;
@@ -81,6 +82,9 @@ public class DBConnectionExtension extends
 		}
 
 		// initialize brand image in dbconnection windows
+
+		// fpuga. EIELValues and EIELPrerencesParser should be rationalized
+		EIELPreferencesParser.getEIELValues();
 		EIELValues v = EIELValues.getInstance();
 		AbstractGVWindow.setHeader(v.getHeader());
 		AbstractGVWindow.setHeaderColor(v.getHeaderColor());

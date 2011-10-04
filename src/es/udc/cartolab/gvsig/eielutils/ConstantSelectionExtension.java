@@ -26,7 +26,6 @@ import com.iver.cit.gvsig.project.documents.view.gui.View;
 import es.udc.cartolab.gvsig.eielutils.constants.ConstantGeometryListener;
 import es.udc.cartolab.gvsig.eielutils.constants.gui.ConstantLabel;
 import es.udc.cartolab.gvsig.eielutils.constants.gui.ConstantSelectionWindow;
-import es.udc.cartolab.gvsig.eielutils.misc.EIELPreferencesParser;
 import es.udc.cartolab.gvsig.users.utils.DBSession;
 
 public class ConstantSelectionExtension extends Extension {
@@ -57,9 +56,6 @@ public class ConstantSelectionExtension extends Extension {
 
 		CADListenerManager.addEndGeometryListener(this.getClass().getName(),
 				new ConstantGeometryListener());
-
-		EIELPreferencesParser.getEIELValues();
-
 	}
 
 	public boolean isEnabled() {
