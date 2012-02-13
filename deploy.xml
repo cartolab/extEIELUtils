@@ -63,8 +63,8 @@
 			¿Delete native libraries?
 		-->
 			<antcall target="clean-all" inheritAll="false">
-				<param name="gvSIG_projects" value="${gvSIG_projects}" />
-				<param name="mandatoryProjets" value="${mandatoryProjets}" />
+				<param name="gvSIG_projects" value="${gvSIG_dist}" />
+				<param name="mandatoryProjets" value="${gvSIG_dist}" />
 			</antcall>
 
 		<!-- Build and move to _fwAndami all projects -->
@@ -74,18 +74,18 @@
 			We should thing about debug=on and debug-level
 		-->
 			<antcall target="build-all" inheritAll="false">
-				<param name="gvSIG_projects" value="${gvSIG_projects}" />
-				<param name="mandatoryProjets" value="${mandatoryProjets}" />
+				<param name="gvSIG_projects" value="${gvSIG_dist}" />
+				<param name="mandatoryProjets" value="${gvSIG_dist}" />
 			</antcall>
 
 		<!-- Build and move to _fwAndami eiel projects -->
 		<!-- TODO: With the hacked property gvSIG-projects, if eiel-projects had the batch-build target, we
 			don't need to use this task -->
-		<antcall target="build-eiel-projects" />
+		<!-- <antcall target="build-eiel-projects" /> -->
 
 
 		<!-- Is not really the portable version. gvSIG and lib folders, and andami.jar has bee removed -->
-		<unzip src="${gvsig-eiel-base-win-path}" dest="/tmp"> </unzip>
+		<!-- <unzip src="${gvsig-eiel-base-win-path}" dest="/tmp"> </unzip> -->
 		
 		<!--  ant tar task does not preserve permissions -->
 		<copy todir="/tmp" file="${gvsig-eiel-base-lin-path}" />
@@ -96,19 +96,20 @@
         	<arg value="--file=${gvsig-eiel-base-lin}.tgz"/>
     	</exec>
 
-		<move file="/tmp/${gvsig-eiel-base-win}" tofile="/tmp/${eielNameWIN}"/>
+		<!-- <move file="/tmp/${gvsig-eiel-base-win}" tofile="/tmp/${eielNameWIN}"/> -->
 		<move file="/tmp/${gvsig-eiel-base-lin}" tofile="/tmp/${eielNameLIN}"/>
 
 		<!-- Move to the portable version the extensions and the libs -->
-		<copy todir="/tmp/${eielNameWIN}/bin/" file="${andami}/andami.jar" />
+		<!-- <copy todir="/tmp/${eielNameWIN}/bin/" file="${andami}/andami.jar" />
 		<copydir dest="/tmp/${eielNameWIN}/bin/lib" src="${andami}/lib"></copydir>
 		<copydir dest="/tmp/${eielNameWIN}/bin/gvSIG" src="${andami}/gvSIG"></copydir>
-		
+		-->
 		<!-- Move to the portable version the extensions and the libs -->
 		<copy todir="/tmp/${eielNameLIN}/bin/" file="${andami}/andami.jar" />
 		<copydir dest="/tmp/${eielNameLIN}/bin/lib" src="${andami}/lib"></copydir>
 		<copydir dest="/tmp/${eielNameLIN}/bin/gvSIG" src="${andami}/gvSIG"></copydir>
 
+		<!-- LAS NATIVES TAMBIÉN HABRÍA QUE RECREARLAS PERO POR ABREVIAR LAS METEMOS EN LA BASE --> 
 		<echo>Remove the not needed theme folder</echo>
 
 	</target>

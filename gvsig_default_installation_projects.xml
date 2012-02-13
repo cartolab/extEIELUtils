@@ -7,96 +7,99 @@
 			extNTOpenCADPlugin,
 			extDockingSkin,
 			extMapSheets,
-			extTOCExtra,
+			exttocextra,
 			extDBConnection,
 			ELLE,
 			extEIELUtils,
 			exteielforms,
-			extvalidation,	
-			gvsig_1_x_binding,
-			eiel
+			extvalidation
 	"/>
+	<!--		gvsig_1_x_bindings,
+				eiel -->
 
 	<!--  gvSIG default installation projects -->
-	<!--  https://gvsig.org/web/projects/gvsig-desktop/devel/gvsig/gvsig-desktop/devel/gvsig/1-11-0/projects -->	
-	<property name="gvSIG_projects" value="
-			libExceptions,
-			libInternationalization,
-			libIverUtiles,
-			libUIComponent,
-			_fwAndami,
-			libGeoUtils,
-			libCorePlugin,
-			libProjection,
-			libRaster,
-			libDXF,
-			libDriverManager,
-			libRemoteServices,
-			libGDBMS,
-			libFMap,
-			libGPE,
-			libGPE-XML,
-			libGPE-GML,
-			libGPE-KML,
-			appgvSIG,
-			libJCRS,
-			extJCRS,
-			libTopology,
-			libDwg,
-			extDwg,
-			extSymbology,
-			extRasterTools-SE,
-			extAddEventTheme,
-			extJDBC,
-			extCAD,
-			extGPE-gvSIG,
-			appCatalogAndGazetteerClient,
-			extCatalogAndGazetteer,
-			extDataLocator,
-			extGeoProcessing,
-			extGeoprocessingExtensions,
-			extGeoreferencing,
-			extSDE,
-			extScripting,
-			extAnnotations,
-			extExpressionField,
-			extWCS,
-			extWFS2,
-			extWMS,
-			extCenterViewToPoint,
-			extHelp,
-			extIconThemeBase,
-			extTableSummarize,
-			extSelectionTools,
-			extProjectBackup,
-			extQuickInfo,
-			extDerivedGeometries,
-			extHyperlink,
-			extI18n,
-			extQuickPrint,
-			extLayerLoadingOrder,
-			extTableImport,
-			extTableExport,
-			binaries
+	<!--  https://gvsig.org/web/projects/gvsig-desktop/devel/gvsig/gvsig-desktop/devel/gvsig/1-11-0/projects -->
+	<property name="gvSIG_dist_projects_on_main_svn" value="
+		libExceptions,
+		libInternationalization,
+		libIverUtiles,
+		libUIComponent,
+		_fwAndami,
+		libGeoUtils,
+		libCorePlugin,
+		libProjection,
+		libRaster,
+		libDXF,
+		libDriverManager,
+		libRemoteServices,
+		libGDBMS,
+		libFMap,
+		libGPE,
+		libGPE-XML,
+		libGPE-GML,
+		libGPE-KML,
+		appgvSIG,
+		libJCRS,
+		extJCRS,
+		libTopology,
+		extOracleSpatial,
+		libDwg,
+		extDwg,
+		extSymbology,
+		extRasterTools-SE,
+		extAddEventTheme,
+		extJDBC,
+		extCAD,
+		extGPE-gvSIG,
+		appCatalogAndGazetteerClient,
+		extCatalogAndGazetteer,
+		extDataLocator,
+		extGeoProcessing,
+		extGeoprocessingExtensions,
+		extGeoreferencing,
+		extSDE,
+		extScripting,
+		extAnnotations,
+		extExpressionField,
+		extWCS,
+		extWFS2,
+		extWMS,
+		extCenterViewToPoint,
+		libArcIMS,
+		extArcims,
+		extHelp,
+		extIconThemeBase,
+		extTableSummarize,
+		extSelectionTools,
+		extProjectBackup,
+		extQuickInfo,
+		extDerivedGeometries,
+		extHyperlink,
+		extI18n,
+		extQuickPrint,
+		extLayerLoadingOrder,
+		extTableImport,
+		extTableExport,
+		org.gvsig.installer.app.extension,
+		binaries
 		"/>
-	
-	<!--
-			Y ademas de estos proyectos, se incluyen en la distribucion los binarios de los proyectos:
-			ChartLegend build 9
-			NavTable 0.8
-			ConsecutiveNumberExtension build 2
-			CopyPasteGeom build 2
-			NewGeoprocess build 4
-			SelectDuplicatesExtension build 2
-			org.gvsig.installer.app.extension,
-			extOracleSpatial,
-			extSextanteGvsigBindings,
-			libArcIMS,
-			extArcims,
-		-->
-		
-		<property name="mandatoryProjets" value="${gvSIG_projects},
+	<property name="gvSIG_dist_projects_on_other_svn" value="
+		org.gvsig.chartlegend,
+		org.gvsig.consecutivenumber,
+		org.gvsig.copypastegeom,
+		org.gvsig.selectduplicates,
+		extNavTable
+	"/>
+	<!-- Me falta:
+	NewGeoprocess build 4
+	extSextanteGvsigBindings
+	install
+	-->
+
+		<property name="gvSIG_dist" value="
+			${gvSIG_dist_projects_on_main_svn},
+			${gvSIG_dist_projects_on_other_svn},
 			${gvSIG-EIEL_projects}
 		"/>
-		
+
 </project>
