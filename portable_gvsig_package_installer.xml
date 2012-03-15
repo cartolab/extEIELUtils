@@ -1,0 +1,44 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>/home/nfrancisco/workspace_1.12_1402/_fwAndami/lib/org.gvsig.andamiupdater-1.0.0-SNAPSHOT.jar</jar>
+  <outfile>/home/nfrancisco/workspace_1.12_1402/_fwAndami/gvsig-package-installer.exe</outfile>
+  <errTitle>gvSIG package installer launch error</errTitle>
+  <cmdLine>gvSIG gvSIG/extensiones --install --installURL=http://gvsig-desktop.forge.osor.eu/gvSIG-desktop/dists/1.12.0/packages.gvspki</cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>https://forge.osor.eu/tracker/?group_id=89</supportUrl>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>/home/nfrancisco/workspace_1.12_1402/install/launch4j/images/ico-gvSIG.ico</icon>
+  <var>PROJ_LIB=&quot;./gvSIG/extensiones/org.gvsig.crs/data&quot;</var>
+  <var>GDAL_DATA=&quot;./data/gdal&quot;</var>
+  <classPath>
+    <mainClass>org.gvsig.andamiupdater.Updater</mainClass>
+    <cp>./lib/org.gvsig.andamiupdater-1.0.0-SNAPSHOT.jar</cp>
+    <cp>./andami.jar</cp>
+  </classPath>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <initialHeapSize>128</initialHeapSize>
+    <maxHeapSize>512</maxHeapSize>
+    <opt>-XX:MaxPermSize=96M</opt>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.12.0.1402</fileVersion>
+    <txtFileVersion>1.12.0 build 1402</txtFileVersion>
+    <fileDescription>gvSIG package installer 1.12.0</fileDescription>
+    <copyright>gvSIG Association</copyright>
+    <productVersion>1.12.0.1402</productVersion>
+    <txtProductVersion>1.12.0 build 1402</txtProductVersion>
+    <productName>gvSIG package installer</productName>
+    <companyName>(c) 2009-2011 gvSIG Association</companyName>
+    <internalName>gvsig-package-installer</internalName>
+    <originalFilename>gvsig-package-installer.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
