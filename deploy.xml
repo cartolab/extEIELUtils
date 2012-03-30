@@ -9,17 +9,20 @@
 	<import file="../appgvSIG/build.xml"/>
 
 	<!-- set global properties for this build -->
+	<!-- 
 	<property name="gvsig-eiel-base-win" value="gvSIG-base-win" />
 	<property name="gvsig-eiel-base-lin" value="gvSIG-base-lin" />
-	<!--  <property name="gvsig-eiel-base-lin" value="gvSIG-EIEL-base-lin" /> -->
+	-->
+	<property name="gvsig-eiel-base-lin" value="gvSIG-EIEL-base-lin" />
+	<property name="gvsig-eiel-base-win" value="gvSIG-EIEL-base-win" />
 	<property name="gvsig-eiel-base-win-path" value="${user.home}/${gvsig-eiel-base-win}.zip" />
 	<property name="gvsig-eiel-base-lin-path" value="${user.home}/${gvsig-eiel-base-lin}.tgz" />
 
 	<!-- <loadproperties srcFile="${basedir}/../../appgvSIG/package.info"/>
 
 		<property name="installVersion" value="${gvSIG-version}.${build}"/> -->
-	<property name="eielNameWIN" value="gvSIG-1.12_build_1206_win32" />
-	<property name="eielNameLIN" value="gvSIG-1.12_build_1206_lin32" />
+	<property name="eielNameWIN" value="gvSIG-1.12_build_1407_win32" />
+	<property name="eielNameLIN" value="gvSIG-1.12_build_1407_lin32" />
 	<!--  <property name="eielNameLIN" value="gvSIG-EIEL-1.0_RC3" /> -->
 
 
