@@ -60,11 +60,11 @@ public class EIELLoadMapWizardComponent extends LoadMapWizardComponent {
 			try {
 				ELLEMap map = EIELMapDAO.getInstance().getMap(view,
 						mapList.getSelectedValue().toString(), whereClause);
-				if (map instanceof EIELMap) {
-					EIELMap auxmap = (EIELMap) map;
-					auxmap.setMunicipios(municipios);
-					auxmap.setWhereClause(whereClause);
-				}
+		// if (map instanceof EIELMap) {
+		// EIELMap auxmap = (EIELMap) map;
+		// auxmap.setMunicipios(municipios);
+		// }
+		map.setWhereClause(whereClause);
 				map.load(crsPanel.getCurProj());
 
 				LayerOperations.zoomToConstant(view);
